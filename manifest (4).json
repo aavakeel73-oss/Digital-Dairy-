@@ -1,0 +1,13 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Digital Diary",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Digital Diary",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "id": "/Digital-Dairy-/",
+  "description": "Personal diary for notes, memories, reminders and finance."
+}
