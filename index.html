@@ -328,6 +328,16 @@
     @media (max-width: 640px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
     }
+  
+    /* Reminder actions remain visible and easy to tap on mobile screens. */
+    #reminders-feed .card { flex-wrap: wrap; gap: 10px; align-items: flex-start !important; }
+    #reminders-feed .reminder-actions { width: 100%; }
+    #reminders-feed .reminder-actions .btn { min-height: 38px; }
+    @media (max-width: 420px) {
+      #reminders-feed .reminder-actions select { width: 100%; max-width: 100% !important; }
+      #reminders-feed .reminder-actions .btn { flex: 1 1 auto; }
+    }
+
   </style>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas-pro@2.0.4"></script><style>.aistudio-hover-highlight { box-shadow: inset 0 0 0 0.5px white, inset 0 0 0 1.5px rgba(128,128,128,0.6) !important; }.aistudio-active-highlight { outline: 2px solid #87a9ff !important; outline-offset: -2px !important; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.3), inset 0 0 0 0.5px rgba(0,0,0,0.3) !important; }.aistudio-generating-blur { filter: blur(5px) grayscale(100%) brightness(28%) !important; transition: filter 0.3s ease; }#aistudio-focus-mode-tag { position: absolute; display: none; align-items: center; gap: 4px; background: #87a9ff; border-radius: 12px; z-index: 10000; padding: 8px; color: #32302c; font-family: Inter, sans-serif; font-size: 14px; font-style: normal; font-weight: 500; line-height: 21px; pointer-events: none; }#aistudio-hover-mode-tag { position: absolute; display: none; align-items: center; gap: 4px; background: rgba(128,128,128,0.6); border-radius: 12px; z-index: 10000; padding: 8px; color: white; font-family: Inter, sans-serif; font-size: 14px; font-style: normal; font-weight: 500; line-height: 21px; pointer-events: none; }.aistudio-img-icon { display: none; vertical-align: middle; pointer-events: auto; cursor: pointer; }.aistudio-img-icon.visible { display: inline-flex; }#aistudio-focus-mode-tag .aistudio-img-icon { position: relative; width: 26px; height: 26px; background: #32302c; border-radius: 6px; margin: -4px -4px -4px 0; }#aistudio-focus-mode-tag .aistudio-img-icon::before { content: ""; position: absolute; top: 4px; left: 4px; width: 18px; height: 18px; background-color: white; -webkit-mask-image: url("https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/edit_fix_auto/default/24px.svg"); -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat; mask-image: url("https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/edit_fix_auto/default/24px.svg"); mask-size: contain; mask-repeat: no-repeat; }#aistudio-hover-mode-tag .aistudio-img-icon { position: relative; width: 18px; height: 18px; margin-left: 4px; }#aistudio-hover-mode-tag .aistudio-img-icon::before { content: ""; position: absolute; top: 0; left: 0; width: 18px; height: 18px; background-color: white; -webkit-mask-image: url("https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/edit_fix_auto/default/24px.svg"); -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat; mask-image: url("https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/edit_fix_auto/default/24px.svg"); mask-size: contain; mask-repeat: no-repeat; }#aistudio-focus-mode-tag .aistudio-img-icon:hover, #aistudio-hover-mode-tag .aistudio-img-icon:hover { background: #424242 !important; }#aistudio-focus-mode-tag .aistudio-img-icon:active, #aistudio-hover-mode-tag .aistudio-img-icon:active { background: #393f51 !important; }</style>
 <style>
@@ -691,7 +701,7 @@
     <div class="modal-card" style="max-width: 440px;">
       <div class="modal-header">
         <h3 id="reminder-modal-title" style="font-size: 1rem; font-weight: 700;">New Reminder</h3>
-        <button class="btn btn-sm" onclick="closeReminderModal()">✕</button>
+        <button type="button" class="btn btn-sm" onclick="closeReminderModal()">✕</button>
       </div>
       <div class="modal-body">
         <input type="text" id="rem-in-title" maxlength="120" placeholder="Reminder Title — यह नोटिफिकेशन में हेडिंग होगी">
@@ -710,8 +720,8 @@
         <p style="font-size:.75rem;color:var(--text-muted);margin-top:6px;">Reminder time पर चुनी हुई ringtone बजाने की कोशिश होगी। पेज खुला रहना चाहिए।</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"><button type="button" class="btn" style="flex:1;" onclick="previewChosenTone(document.getElementById('rem-in-tone').value)">▶ रिंगटोन सुनें</button></div>
       </div>
       <div class="modal-footer">
-        <button class="btn" onclick="closeReminderModal()">Cancel</button>
-        <button id="reminder-save-btn" class="btn btn-primary" onclick="saveReminderEntry()">Save Reminder</button>
+        <button type="button" class="btn" onclick="closeReminderModal()">Cancel</button>
+        <button type="button" id="reminder-save-btn" class="btn btn-primary" onclick="saveReminderEntry()">Save Reminder</button>
       </div>
     </div>
   </div>
@@ -803,9 +813,15 @@
       } catch (err) { return fallback; }
     }
     function setStorage(key, value) {
-      try { localStorage.setItem('chr_' + key, JSON.stringify(value)); } catch (err) {}
+      try {
+        localStorage.setItem('chr_' + key, JSON.stringify(value));
+        // Verify that the value was actually written before reporting success.
+        var saved = localStorage.getItem('chr_' + key);
+        if (saved === null || JSON.stringify(JSON.parse(saved)) !== JSON.stringify(value)) return false;
+      } catch (err) { return false; }
       // Notify the Firebase module when diary data changes. Local saving still works offline.
       try { window.dispatchEvent(new CustomEvent('chronicle-local-data-changed', { detail: { key: key } })); } catch (err) {}
+      return true;
     }
 
     var journals = getStorage('journals', INITIAL_JOURNALS);
@@ -1559,12 +1575,13 @@
               '<span class="meta-sep">·</span><span>🔔 ' + escapeHtml(RINGTONE_NAMES[r.tone] || 'Classic Bell') + '</span>',
             '</div>',
           '</div>',
-          '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;max-width:100%;margin-top:8px;">',
+          '<div class=\"reminder-actions\" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;max-width:100%;width:100%;margin-top:10px;">',
             '<select aria-label="Change reminder ringtone" style="max-width:180px;margin:0;" onchange="changeReminderTone(\'' + r.id + '\',this.value)">' + ringtoneOptionsHtml(r.tone) + '</select>',
             '<button class="btn btn-sm" onclick="previewChosenTone(\'' + (r.tone || 'classic') + '\')">▶ Preview</button>',
             '<button class="btn btn-sm" onclick="toggleReminderDone(\'' + r.id + '\')">' + (r.isCompleted ? 'Undo' : 'Done') + '</button>',
-            '<button class="btn btn-sm" onclick="editReminder(\'' + r.id + '\')">✏️ Edit</button>',
-            '<button class="btn btn-sm btn-danger" onclick="deleteReminder(\'' + r.id + '\')">🗑️ Delete</button>',
+            '<button type="button" class="btn btn-sm btn-primary" onclick="editReminder(\'' + r.id + '\')">✏️ Edit</button>',
+            '<button type="button" class="btn btn-sm" onclick="shareReminder(\'' + r.id + '\')">↗️ Share</button>',
+            '<button type="button" class="btn btn-sm btn-danger" onclick="deleteReminder(\'' + r.id + '\')">🗑️ Delete</button>',
           '</div>'
         ].join('');
         feed.appendChild(card);
@@ -1586,7 +1603,7 @@
     function editReminder(id) {
       var r = reminders.find(function(x) { return String(x.id) === String(id); });
       if (!r) { showToast('Reminder not found'); return; }
-      editingReminderId = id;
+      editingReminderId = String(r.id);
       document.getElementById('reminder-modal-title').textContent = 'Edit Reminder';
       document.getElementById('reminder-save-btn').textContent = 'Update Reminder';
       document.getElementById('rem-in-title').value = r.title || '';
@@ -1639,7 +1656,7 @@
         Object.keys(reminderAlarmLastFired).forEach(function(key) {
           if (key.indexOf(String(reminders[index].id) + '-') === 0) delete reminderAlarmLastFired[key];
         });
-        setStorage('reminders', reminders);
+        if (!setStorage('reminders', reminders)) { showToast('सेव नहीं हुआ: फोन की स्टोरेज उपलब्ध नहीं है। ब्राउज़र की साइट स्टोरेज अनुमति जाँचें।'); return; }
         renderRemindersView();
         closeReminderModal();
         editingReminderId = null;
@@ -1650,10 +1667,10 @@
           title: title, message: message, date: date, time: time,
           repeat: repeat, tone: tone, isCompleted: false, updatedAt: Date.now()
         });
-        setStorage('reminders', reminders);
+        if (!setStorage('reminders', reminders)) { reminders.pop(); showToast('सेव नहीं हुआ: फोन की स्टोरेज उपलब्ध नहीं है। ब्राउज़र की साइट स्टोरेज अनुमति जाँचें।'); return; }
         renderRemindersView();
         closeReminderModal();
-        showToast('Reminder added!');
+        showToast('रिमाइंडर सेव हो गया ✓');
       }
       if ('Notification' in window && Notification.permission === 'default') requestReminderNotifications();
     }
@@ -1674,6 +1691,42 @@
       setStorage('reminders', reminders);
       renderRemindersView();
       showToast('रिमाइंडर डिलीट हो गया');
+    }
+    async function shareReminder(id) {
+      var r = reminders.find(function(x) { return String(x.id) === String(id); });
+      if (!r) { showToast('रिमाइंडर नहीं मिला'); return; }
+      var repeatLabels = {none:'एक बार', daily:'रोज़', weekly:'हर सप्ताह', monthly:'हर महीने', yearly:'हर साल'};
+      var shareText = '📌 Digital Diary Reminder\n' +
+        'शीर्षक: ' + (r.title || 'रिमाइंडर') + '\n' +
+        (r.message ? 'विवरण: ' + r.message + '\n' : '') +
+        'तारीख: ' + (r.date || '—') + '\n' +
+        'समय: ' + (r.time || '—') + '\n' +
+        'दोहराव: ' + (repeatLabels[r.repeat] || r.repeat || 'एक बार');
+      if (navigator.share) {
+        try {
+          await navigator.share({title: r.title || 'Digital Diary Reminder', text: shareText});
+          showToast('रिमाइंडर शेयर मेनू खुल गया');
+          return;
+        } catch (err) {
+          if (err && err.name === 'AbortError') return;
+        }
+      }
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(shareText);
+          showToast('रिमाइंडर कॉपी हो गया — अब कहीं भी शेयर करें');
+          return;
+        }
+      } catch (err) {}
+      var area = document.createElement('textarea');
+      area.value = shareText; area.setAttribute('readonly', '');
+      area.style.position = 'fixed'; area.style.opacity = '0';
+      document.body.appendChild(area); area.select();
+      var copied = false;
+      try { copied = document.execCommand('copy'); } catch (err) {}
+      area.remove();
+      if (copied) showToast('रिमाइंडर कॉपी हो गया — अब कहीं भी शेयर करें');
+      else window.prompt('इस रिमाइंडर को कॉपी करके शेयर करें:', shareText);
     }
     function saveDailyRitualTime() {
       settings.dailyReminderTime = document.getElementById('daily-ritual-time').value;
@@ -2244,5 +2297,59 @@
       }
     });
   </script>
+
+<script>
+/* Independent reminder-save safety handler: works even if the original inline click handler fails. */
+(function () {
+  function toastMessage(message) {
+    var el = document.getElementById('app-toast');
+    if (el) { el.textContent = message; el.style.display = 'block'; setTimeout(function(){ el.style.display='none'; }, 3200); }
+    else { alert(message); }
+  }
+  function safeSave(list) {
+    var json = JSON.stringify(list);
+    localStorage.setItem('chr_reminders', json);
+    var check = JSON.parse(localStorage.getItem('chr_reminders') || 'null');
+    if (!Array.isArray(check) || check.length !== list.length) throw new Error('Storage verification failed');
+    window.reminders = list;
+  }
+  document.addEventListener('click', function (event) {
+    var button = event.target && event.target.closest ? event.target.closest('#reminder-save-btn') : null;
+    if (!button) return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+    try {
+      var titleEl=document.getElementById('rem-in-title'), messageEl=document.getElementById('rem-in-message');
+      var dateEl=document.getElementById('rem-in-date'), timeEl=document.getElementById('rem-in-time');
+      var repeatEl=document.getElementById('rem-in-repeat'), toneEl=document.getElementById('rem-in-tone');
+      var title=titleEl ? titleEl.value.trim() : '', message=messageEl ? messageEl.value.trim() : '';
+      var date=dateEl ? dateEl.value : '', time=timeEl ? timeEl.value : '';
+      if (!title) { toastMessage('कृपया रिमाइंडर का शीर्षक लिखें।'); if(titleEl) titleEl.focus(); return; }
+      if (!date || !time) { toastMessage('कृपया तारीख और समय चुनें।'); return; }
+      var list=Array.isArray(window.reminders) ? window.reminders.slice() : [];
+      if (!list.length) { try { var stored=JSON.parse(localStorage.getItem('chr_reminders')||'[]'); if(Array.isArray(stored)) list=stored; } catch(_){} }
+      var editId = (typeof window.editingReminderId !== 'undefined') ? window.editingReminderId : null;
+      var record={title:title,message:message,date:date,time:time,repeat:repeatEl?repeatEl.value:'none',tone:toneEl?(toneEl.value||'classic'):'classic',isCompleted:false,updatedAt:Date.now()};
+      if (editId !== null && editId !== undefined) {
+        var idx=list.findIndex(function(item){return String(item.id)===String(editId);});
+        if(idx<0) { toastMessage('रिमाइंडर नहीं मिला। सूची फिर खोलकर Edit करें।'); return; }
+        list[idx]=Object.assign({},list[idx],record);
+      } else {
+        record.id='rem-'+Date.now()+'-'+Math.random().toString(36).slice(2,7);
+        list.push(record);
+      }
+      safeSave(list);
+      if (typeof window.renderRemindersView === 'function') window.renderRemindersView();
+      if (typeof window.closeReminderModal === 'function') window.closeReminderModal();
+      if (typeof window.editingReminderId !== 'undefined') window.editingReminderId=null;
+      toastMessage(editId !== null && editId !== undefined ? 'रिमाइंडर अपडेट हो गया ✓' : 'रिमाइंडर सेव हो गया ✓');
+    } catch (error) {
+      console.error('Reminder save failed:', error);
+      toastMessage('रिमाइंडर सेव नहीं हुआ। फोन की साइट स्टोरेज अनुमति जाँचें।');
+    }
+  }, true);
+})();
+</script>
 
 </body></html>
