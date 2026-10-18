@@ -690,7 +690,7 @@
   <div id="modal-reminder" class="modal-overlay">
     <div class="modal-card" style="max-width: 440px;">
       <div class="modal-header">
-        <h3 style="font-size: 1rem; font-weight: 700;">New Reminder</h3>
+        <h3 id="reminder-modal-title" style="font-size: 1rem; font-weight: 700;">New Reminder</h3>
         <button class="btn btn-sm" onclick="closeReminderModal()">✕</button>
       </div>
       <div class="modal-body">
@@ -711,7 +711,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn" onclick="closeReminderModal()">Cancel</button>
-        <button class="btn btn-primary" onclick="saveReminderEntry()">Save Reminder</button>
+        <button id="reminder-save-btn" class="btn btn-primary" onclick="saveReminderEntry()">Save Reminder</button>
       </div>
     </div>
   </div>
@@ -1530,6 +1530,7 @@
     if (!alarmTicker) alarmTicker=setInterval(function(){checkReminderAlarms();},5000);
 
     // --- REMINDERS ---
+    var editingReminderId = null;
     function renderRemindersView() {
       var nstatus = document.getElementById('rem-notification-status');
       if (nstatus && 'Notification' in window) nstatus.textContent = Notification.permission === 'granted' ? 'चालू हैं ✓' : (Notification.permission === 'denied' ? 'ब्राउज़र सेटिंग में अनुमति दें' : 'अभी बंद हैं');
@@ -1562,7 +1563,8 @@
             '<select aria-label="Change reminder ringtone" style="max-width:180px;margin:0;" onchange="changeReminderTone(\'' + r.id + '\',this.value)">' + ringtoneOptionsHtml(r.tone) + '</select>',
             '<button class="btn btn-sm" onclick="previewChosenTone(\'' + (r.tone || 'classic') + '\')">▶ Preview</button>',
             '<button class="btn btn-sm" onclick="toggleReminderDone(\'' + r.id + '\')">' + (r.isCompleted ? 'Undo' : 'Done') + '</button>',
-            '<button class="btn btn-sm btn-danger" onclick="deleteReminder(\'' + r.id + '\')">✕</button>',
+            '<button class="btn btn-sm" onclick="editReminder(\'' + r.id + '\')">✏️ Edit</button>',
+            '<button class="btn btn-sm btn-danger" onclick="deleteReminder(\'' + r.id + '\')">🗑️ Delete</button>',
           '</div>'
         ].join('');
         feed.appendChild(card);
@@ -1570,32 +1572,93 @@
     }
 
     function openReminderModal() {
+      editingReminderId = null;
+      document.getElementById('reminder-modal-title').textContent = 'New Reminder';
+      document.getElementById('reminder-save-btn').textContent = 'Save Reminder';
       document.getElementById('rem-in-title').value = '';
       document.getElementById('rem-in-message').value = '';
       document.getElementById('rem-in-tone').value = 'classic';
       document.getElementById('rem-in-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('rem-in-time').value = '20:00';
+      document.getElementById('rem-in-repeat').value = 'none';
+      document.getElementById('modal-reminder').classList.add('open');
+    }
+    function editReminder(id) {
+      var r = reminders.find(function(x) { return String(x.id) === String(id); });
+      if (!r) { showToast('Reminder not found'); return; }
+      editingReminderId = id;
+      document.getElementById('reminder-modal-title').textContent = 'Edit Reminder';
+      document.getElementById('reminder-save-btn').textContent = 'Update Reminder';
+      document.getElementById('rem-in-title').value = r.title || '';
+      document.getElementById('rem-in-message').value = r.message || '';
+      document.getElementById('rem-in-date').value = r.date || new Date().toISOString().split('T')[0];
+      document.getElementById('rem-in-time').value = r.time || '20:00';
+      document.getElementById('rem-in-repeat').value = r.repeat || 'none';
+      document.getElementById('rem-in-tone').value = r.tone || 'classic';
       document.getElementById('modal-reminder').classList.add('open');
     }
     function closeReminderModal() {
       document.getElementById('modal-reminder').classList.remove('open');
     }
     function saveReminderEntry() {
-      var title = document.getElementById('rem-in-title').value.trim();
-      var message = document.getElementById('rem-in-message').value.trim();
-      var date = document.getElementById('rem-in-date').value;
-      var time = document.getElementById('rem-in-time').value;
-      var repeat = document.getElementById('rem-in-repeat').value;
-      if (!title) return;
+      var titleEl = document.getElementById('rem-in-title');
+      var messageEl = document.getElementById('rem-in-message');
+      var dateEl = document.getElementById('rem-in-date');
+      var timeEl = document.getElementById('rem-in-time');
+      var repeatEl = document.getElementById('rem-in-repeat');
+      var toneEl = document.getElementById('rem-in-tone');
+      var title = titleEl ? titleEl.value.trim() : '';
+      var message = messageEl ? messageEl.value.trim() : '';
+      var date = dateEl ? dateEl.value : '';
+      var time = timeEl ? timeEl.value : '';
+      var repeat = repeatEl ? repeatEl.value : 'none';
+      var tone = toneEl ? (toneEl.value || 'classic') : 'classic';
 
-      reminders.push({ id: 'rem-' + Date.now(), title: title, message: message, date: date, time: time, repeat: repeat, tone: document.getElementById('rem-in-tone').value || 'classic', isCompleted: false });
-      setStorage('reminders', reminders);
-      closeReminderModal();
-      showToast('Reminder added!');
-      renderRemindersView();
+      if (!title) { showToast('कृपया रिमाइंडर का शीर्षक लिखें'); if (titleEl) titleEl.focus(); return; }
+      if (!date || !time) { showToast('कृपया तारीख और समय चुनें'); return; }
+
+      if (editingReminderId !== null && editingReminderId !== undefined) {
+        var index = reminders.findIndex(function(x) { return String(x.id) === String(editingReminderId); });
+        if (index === -1) {
+          showToast('रिमाइंडर नहीं मिला। सूची फिर खोलकर Edit करें।');
+          editingReminderId = null;
+          return;
+        }
+        var oldReminder = reminders[index];
+        reminders[index] = Object.assign({}, oldReminder, {
+          title: title,
+          message: message,
+          date: date,
+          time: time,
+          repeat: repeat,
+          tone: tone,
+          isCompleted: false,
+          lastTriggeredKey: null,
+          updatedAt: Date.now()
+        });
+        Object.keys(reminderAlarmLastFired).forEach(function(key) {
+          if (key.indexOf(String(reminders[index].id) + '-') === 0) delete reminderAlarmLastFired[key];
+        });
+        setStorage('reminders', reminders);
+        renderRemindersView();
+        closeReminderModal();
+        editingReminderId = null;
+        showToast('रिमाइंडर सफलतापूर्वक अपडेट हो गया ✓');
+      } else {
+        reminders.push({
+          id: 'rem-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+          title: title, message: message, date: date, time: time,
+          repeat: repeat, tone: tone, isCompleted: false, updatedAt: Date.now()
+        });
+        setStorage('reminders', reminders);
+        renderRemindersView();
+        closeReminderModal();
+        showToast('Reminder added!');
+      }
       if ('Notification' in window && Notification.permission === 'default') requestReminderNotifications();
     }
     function toggleReminderDone(id) {
-      var r = reminders.find(function(x) { return x.id === id; });
+      var r = reminders.find(function(x) { return String(x.id) === String(id); });
       if (r) {
         r.isCompleted = !r.isCompleted;
         setStorage('reminders', reminders);
@@ -1604,9 +1667,13 @@
       }
     }
     function deleteReminder(id) {
-      reminders = reminders.filter(function(r) { return r.id !== id; });
+      var r = reminders.find(function(x) { return String(x.id) === String(id); });
+      if (!r) return;
+      if (!confirm('क्या आप "' + (r.title || 'Reminder') + '" को डिलीट करना चाहते हैं?')) return;
+      reminders = reminders.filter(function(x) { return String(x.id) !== String(id); });
       setStorage('reminders', reminders);
       renderRemindersView();
+      showToast('रिमाइंडर डिलीट हो गया');
     }
     function saveDailyRitualTime() {
       settings.dailyReminderTime = document.getElementById('daily-ritual-time').value;
