@@ -391,7 +391,7 @@
     <div class="header-actions">
       <button class="btn btn-sm" onclick="downloadThisAppFile()" title="Download index.html file">⬇ Download File</button>
       <button class="btn btn-sm" onclick="openSearchModal()">🔍 Search</button>
-      <button class="btn btn-sm" type="button" onclick="window.chronicleOpenAuth && window.chronicleOpenAuth()">✉️ Email / Phone</button>
+      <button class="btn btn-sm" type="button" onclick="window.chronicleOpenAuth && window.chronicleOpenAuth()">✉️ Email Login</button>
       <button class="btn btn-sm" id="google-login-btn" type="button" onclick="window.chronicleGoogleLogin && window.chronicleGoogleLogin()">🔐 Google Login</button>
       <span id="google-user-status" style="font-size:0.72rem;color:var(--text-muted);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" aria-live="polite"></span>
       <button class="btn btn-sm btn-primary" onclick="openEditorModal()">+ Write</button>
@@ -1921,7 +1921,7 @@
 
 
 
-  <!-- EMAIL/PASSWORD AND PHONE OTP SIGN-IN -->
+  <!-- EMAIL/PASSWORD SIGN-IN: PHONE LOGIN REMOVED -->
   <div id="account-auth-panel" role="dialog" aria-modal="true" aria-labelledby="account-auth-title">
     <div class="auth-card">
       <h2 id="account-auth-title" style="margin:0 0 8px;">Account Login</h2>
@@ -1944,43 +1944,6 @@
       <div class="auth-actions" id="auth-signup-actions" style="display:none;">
         <button class="auth-primary" type="button" id="auth-email-create">Sign Up / नया अकाउंट बनाएँ</button>
       </div>
-      <div id="auth-phone-section" style="display:block;">
-      <hr style="margin:18px 0;">
-      <h3 style="margin:0 0 10px;font-size:16px;font-weight:700;">Phone Login / फोन नंबर से लॉगिन</h3>
-      <label for="auth-country-code">देश चुनें / Country code</label>
-      <select id="auth-country-code" aria-label="Select country calling code" style="width:100%;padding:12px;margin:6px 0 10px;border:1px solid #aaa;border-radius:8px;font-size:16px;">
-        <option value="+91" selected>🇮🇳 India (+91)</option>
-        <option value="+1">🇺🇸 United States / Canada (+1)</option>
-        <option value="+44">🇬🇧 United Kingdom (+44)</option>
-        <option value="+971">🇦🇪 United Arab Emirates (+971)</option>
-        <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
-        <option value="+974">🇶🇦 Qatar (+974)</option>
-        <option value="+965">🇰🇼 Kuwait (+965)</option>
-        <option value="+968">🇴🇲 Oman (+968)</option>
-        <option value="+973">🇧🇭 Bahrain (+973)</option>
-        <option value="+880">🇧🇩 Bangladesh (+880)</option>
-        <option value="+92">🇵🇰 Pakistan (+92)</option>
-        <option value="+94">🇱🇰 Sri Lanka (+94)</option>
-        <option value="+977">🇳🇵 Nepal (+977)</option>
-        <option value="+61">🇦🇺 Australia (+61)</option>
-        <option value="+65">🇸🇬 Singapore (+65)</option>
-        <option value="+60">🇲🇾 Malaysia (+60)</option>
-        <option value="+49">🇩🇪 Germany (+49)</option>
-        <option value="+33">🇫🇷 France (+33)</option>
-        <option value="+81">🇯🇵 Japan (+81)</option>
-      </select>
-      <label for="auth-phone">फोन नंबर / Phone number</label>
-      <input id="auth-phone" name="diary-phone-login" type="tel" inputmode="numeric" autocomplete="tel-national" value="" placeholder="अपना फोन नंबर लिखें" aria-label="Phone number without country code">
-      <div id="recaptcha-container" style="margin:8px 0;"></div>
-      <div class="auth-actions">
-        <button class="auth-primary" type="button" id="auth-send-otp">फोन पर OTP भेजें</button>
-      </div>
-      <div id="auth-otp-area" style="display:none;">
-        <label for="auth-otp">SMS से आया OTP</label>
-        <input id="auth-otp" inputmode="numeric" autocomplete="one-time-code" placeholder="OTP दर्ज करें">
-        <div class="auth-actions"><button class="auth-primary" type="button" id="auth-verify-otp">OTP सत्यापित करें</button></div>
-      </div>
-      </div>
       <div id="auth-message" role="status" aria-live="polite"></div>
       <div class="auth-actions"><button class="auth-secondary" type="button" id="auth-close">बंद करें</button></div>
     </div>
@@ -1991,7 +1954,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
     import {
       getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence,
-      createUserWithEmailAndPassword, signInWithEmailAndPassword, RecaptchaVerifier, signInWithPhoneNumber
+      createUserWithEmailAndPassword, signInWithEmailAndPassword
     } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
     import {
       getFirestore, doc, getDoc, setDoc, serverTimestamp
@@ -2113,11 +2076,9 @@
     };
 
 
-    // Email/password and phone/SMS OTP use the same Firebase account and cloud-sync flow.
+    // Email/password sign-in and Google sign-in use the same Firebase account and cloud-sync flow.
     const authPanel = document.getElementById("account-auth-panel");
     const authMessage = document.getElementById("auth-message");
-    let phoneConfirmation = null;
-    let recaptchaVerifier = null;
     function setAuthMessage(message, isError = false) {
       if (authMessage) {
         authMessage.textContent = message;
@@ -2130,12 +2091,6 @@
       document.getElementById("auth-email").value = "";
       document.getElementById("auth-password").value = "";
       document.getElementById("auth-password-confirm").value = "";
-      document.getElementById("auth-country-code").value = "+91";
-      document.getElementById("auth-phone").value = "";
-      document.getElementById("auth-otp").value = "";
-      document.getElementById("auth-otp-area").style.display = "none";
-      document.getElementById("auth-phone-section").style.display = "block";
-      document.getElementById("auth-otp-area").style.display = "none";
       setAuthMessage("");
     };
     function closeAuthPanel() {
@@ -2148,7 +2103,6 @@
       document.getElementById("auth-confirm-group").style.display = signup ? "block" : "none";
       document.getElementById("auth-signup-actions").style.display = signup ? "flex" : "none";
       document.getElementById("auth-login-actions").style.display = signup ? "none" : "flex";
-      document.getElementById("auth-phone-section").style.display = signup ? "none" : "block";
       document.getElementById("auth-mode-login").className = signup ? "auth-secondary" : "auth-primary";
       document.getElementById("auth-mode-signup").className = signup ? "auth-primary" : "auth-secondary";
       document.getElementById("auth-mode-login").setAttribute("aria-pressed", String(!signup));
@@ -2159,7 +2113,6 @@
     }
     document.getElementById("auth-mode-login")?.addEventListener("click", () => {
       setAuthMode("login");
-      document.getElementById("auth-phone-section").style.display = "block";
       document.getElementById("auth-email").value = "";
       document.getElementById("auth-password").value = "";
     });
@@ -2227,55 +2180,7 @@
       }
     });
 
-    document.getElementById("auth-send-otp")?.addEventListener("click", async () => {
-      const countryCode = document.getElementById("auth-country-code").value;
-      let localPhone = document.getElementById("auth-phone").value.trim().replace(/[\s().-]/g, "");
-      // Accept a full international number if the user pasted one; otherwise combine the selected country code.
-      let phone = localPhone.startsWith("+") ? localPhone : countryCode + localPhone.replace(/^0+/, "");
-      phone = phone.replace(/(?!^)\+/g, "");
-      if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
-        return setAuthMessage("कृपया सही फोन नंबर और देश कोड चुनें। उदाहरण: भारत में +91 चुनकर 10 अंकों का नंबर लिखें।", true);
-      }
-      try {
-        await persistenceReady;
-        const sendButton = document.getElementById("auth-send-otp");
-        sendButton.disabled = true;
-        if (recaptchaVerifier) {
-          try { await recaptchaVerifier.clear(); } catch (_) {}
-          recaptchaVerifier = null;
-        }
-        recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", { size: "normal" });
-        await recaptchaVerifier.render();
-        phoneConfirmation = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
-        document.getElementById("auth-otp-area").style.display = "block";
-        setAuthMessage("OTP भेज दिया गया है। SMS में आया कोड दर्ज करें।");
-      } catch (error) {
-        console.error("Phone OTP error:", error);
-        setAuthMessage(error.code === "auth/operation-not-allowed"
-          ? "Firebase Console में Phone provider चालू करें।"
-          : error.code === "auth/invalid-phone-number"
-          ? "फोन नंबर सही नहीं है। देश कोड सहित लिखें।"
-          : (error.message || "OTP नहीं भेजा गया। Firebase Phone सेटिंग जाँचें।"), true);
-      } finally {
-        document.getElementById("auth-send-otp").disabled = false;
-      }
-    });
 
-    document.getElementById("auth-verify-otp")?.addEventListener("click", async () => {
-      const code = document.getElementById("auth-otp").value.trim();
-      if (!phoneConfirmation) return setAuthMessage("पहले फोन पर OTP भेजें।", true);
-      if (!code) return setAuthMessage("SMS वाला OTP दर्ज करें।", true);
-      try {
-        await phoneConfirmation.confirm(code);
-        setAuthMessage("फोन लॉगिन सफल हुआ।");
-        closeAuthPanel();
-      } catch (error) {
-        console.error("OTP verification error:", error);
-        setAuthMessage(error.code === "auth/invalid-verification-code"
-          ? "OTP गलत है। दोबारा जाँचें।"
-          : (error.message || "OTP सत्यापित नहीं हुआ।"), true);
-      }
-    });
 
     onAuthStateChanged(auth, async function (user) {
       syncReady = false;
