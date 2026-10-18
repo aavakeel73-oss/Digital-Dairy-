@@ -1,656 +1,1965 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#020817">
-<meta name="description" content="A private, futuristic personal digital diary.">
-<title>NEON DIARY</title>
-<style>
-:root{--bg-main:#020817;--bg-secondary:#06152B;--bg-card:#082343;--bg-panel:#041326;--neon-blue:#00A9FF;--electric-cyan:#00F0FF;--bright-turquoise:#20E8D8;--accent-purple:#8B5CF6;--text-primary:#F3F8FF;--text-secondary:#A8C7E8;--text-muted:#7895B5;--border-color:rgba(0,210,255,.48);--success:#36E7B5;--warning:#FFD166;--error:#FF5478;--surface-glass:rgba(8,35,67,.78);--surface-glass-strong:rgba(4,19,38,.94);--glow-soft:0 0 12px rgba(0,240,255,.16);--glow-medium:0 0 20px rgba(0,169,255,.24);--glow-strong:0 0 28px rgba(0,240,255,.32);--radius-small:10px;--radius-medium:16px;--radius-large:22px;--touch-target:44px}
-*{box-sizing:border-box}html{background:var(--bg-main);scroll-behavior:smooth}body{margin:0;color:var(--text-primary);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(ellipse at 80% 0%,#0a2550 0,transparent 36%),radial-gradient(ellipse at 0% 40%,rgba(0,169,255,.08),transparent 38%),var(--bg-main);min-height:100vh;padding-bottom:calc(86px + env(safe-area-inset-bottom))}button,input,textarea,select{font:inherit}button{cursor:pointer;color:inherit}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--electric-cyan);outline-offset:3px}.shell{max-width:1100px;margin:auto;padding:18px 15px 24px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.brand{display:flex;gap:11px;align-items:center}.logo{width:45px;height:45px;border:1px solid var(--electric-cyan);border-radius:14px;display:grid;place-items:center;color:var(--electric-cyan);font-size:23px;background:linear-gradient(135deg,rgba(0,240,255,.12),rgba(139,92,246,.12));box-shadow:var(--glow-medium)}h1,h2,h3,p{margin-top:0}h1{font-size:19px;letter-spacing:2px;margin:0;font-weight:850}h2{font-size:20px;margin-bottom:5px}h3{font-size:15px;margin-bottom:8px}.sub{color:var(--text-muted);font-size:12px}.header-actions{display:flex;align-items:center;gap:8px}.icon-btn,.btn,.nav-btn,.mood-btn,.tag-chip{border:1px solid var(--border-color);background:rgba(4,19,38,.8);border-radius:12px;min-height:44px;padding:9px 13px}.icon-btn{width:44px;padding:0;font-size:18px}.btn-primary{background:linear-gradient(120deg,#007cbf,#0754a3);border-color:var(--electric-cyan);box-shadow:var(--glow-soft);font-weight:750}.btn-secondary{background:rgba(0,169,255,.09)}.btn-danger{border-color:rgba(255,84,120,.6);color:#ff8ca5}.btn:active,.icon-btn:active,.nav-btn:active{transform:scale(.98)}.status{font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:7px}.dot{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 10px currentColor;display:inline-block}.hero{position:relative;overflow:hidden;border:1px solid var(--border-color);border-radius:var(--radius-large);padding:24px 20px;background:linear-gradient(130deg,rgba(0,169,255,.15),rgba(139,92,246,.1) 55%,rgba(8,35,67,.9));box-shadow:var(--glow-soft);margin-bottom:18px}.hero:after{content:"";position:absolute;width:190px;height:190px;border:1px solid rgba(0,240,255,.2);border-radius:50%;right:-65px;top:-85px;box-shadow:0 0 0 18px rgba(0,240,255,.025),0 0 0 38px rgba(0,240,255,.02);pointer-events:none}.eyebrow{color:var(--electric-cyan);font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:800}.hero h2{font-size:25px;margin:8px 0}.hero p{color:var(--text-secondary);max-width:520px;margin-bottom:18px}.grid{display:grid;grid-template-columns:1fr;gap:16px}.panel{background:var(--surface-glass);border:1px solid rgba(0,210,255,.24);border-radius:var(--radius-large);padding:17px;box-shadow:var(--glow-soft);min-width:0}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}.panel-head h2{font-size:17px;margin:0}.moods{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.mood-btn{padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;border-color:rgba(0,210,255,.2);color:var(--text-secondary);min-width:0}.mood-btn span:first-child{font-size:21px}.mood-btn.selected{border-color:var(--electric-cyan);background:rgba(0,240,255,.13);color:var(--text-primary);box-shadow:var(--glow-soft)}.entry-list,.note-list,.task-list{display:grid;gap:10px}.entry-card,.note-card,.task-card{border:1px solid rgba(0,210,255,.2);border-radius:14px;padding:13px;background:rgba(2,8,23,.45);min-width:0}.entry-card h3,.note-card h3{margin:0 0 5px;overflow-wrap:anywhere}.entry-card p,.note-card p{color:var(--text-secondary);font-size:13px;margin:8px 0;white-space:pre-wrap;overflow-wrap:anywhere}.meta{font-size:11px;color:var(--text-muted);display:flex;flex-wrap:wrap;gap:8px}.card-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.card-actions button{min-height:36px;padding:6px 10px;font-size:12px;border-radius:9px}.empty{padding:24px 10px;text-align:center;color:var(--text-muted);border:1px dashed rgba(0,210,255,.22);border-radius:14px}.field{display:grid;gap:6px;margin-bottom:13px}.field label{font-size:12px;color:var(--text-secondary);font-weight:700}.field input,.field textarea,.field select,.searchbox{width:100%;min-width:0;background:#020d20;color:var(--text-primary);border:1px solid rgba(0,210,255,.35);border-radius:11px;padding:12px}.field textarea{min-height:180px;resize:vertical;line-height:1.7}.field input::placeholder,.field textarea::placeholder,.searchbox::placeholder{color:#6d89aa}.row-fields{display:grid;grid-template-columns:1fr;gap:10px}.editor-actions{display:flex;gap:8px;flex-wrap:wrap}.counter{font-size:11px;color:var(--text-muted);display:flex;justify-content:space-between;gap:10px}.calendar-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}.weekday,.day{display:grid;place-items:center;min-width:0}.weekday{font-size:10px;color:var(--text-muted);padding:5px 0}.day{height:39px;border-radius:9px;border:1px solid transparent;background:rgba(2,8,23,.25);font-size:12px;position:relative;padding:0}.day.has-entry:after{content:"";width:4px;height:4px;border-radius:50%;background:var(--electric-cyan);position:absolute;bottom:4px}.day.today{border-color:var(--accent-purple)}.day.selected{background:rgba(0,240,255,.18);border-color:var(--electric-cyan)}.hidden{display:none!important}.section{display:none}.section.active{display:block}.bottom-nav{position:fixed;z-index:10;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(2,8,23,.96);border-top:1px solid rgba(0,210,255,.32);backdrop-filter:blur(18px)}.nav-btn{border:1px solid transparent;background:transparent;color:var(--text-muted);padding:5px 2px;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;border-radius:12px}.nav-btn span:first-child{font-size:19px}.nav-btn.active{color:var(--electric-cyan);background:rgba(0,240,255,.08);border-color:rgba(0,240,255,.18)}.toast{position:fixed;z-index:30;bottom:calc(90px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#082343;border:1px solid var(--electric-cyan);box-shadow:var(--glow-medium);border-radius:12px;padding:11px 16px;max-width:calc(100vw - 30px);font-size:13px}.divider{border:0;border-top:1px solid rgba(0,210,255,.18);margin:16px 0}.tag{font-size:10px;border:1px solid rgba(139,92,246,.5);color:#c4b5fd;border-radius:20px;padding:2px 7px}.two-col{display:grid;grid-template-columns:1fr;gap:16px}.muted{color:var(--text-muted)}.checkboxline{display:flex;gap:8px;align-items:center;color:var(--text-secondary);font-size:13px}.task-card{display:flex;gap:10px;align-items:flex-start}.task-card input{margin-top:5px;accent-color:var(--electric-cyan)}.task-text{flex:1;overflow-wrap:anywhere}.task-text.done{text-decoration:line-through;color:var(--text-muted)}.settings-grid{display:grid;gap:12px}.small{font-size:12px}.notice{padding:12px;border:1px solid rgba(255,209,102,.3);border-radius:12px;color:var(--warning);font-size:12px;margin-bottom:14px}dialog{width:min(650px,calc(100% - 24px));max-height:88dvh;overflow:auto;background:var(--bg-panel);color:var(--text-primary);border:1px solid var(--electric-cyan);border-radius:20px;padding:18px;box-shadow:0 0 40px rgba(0,0,0,.65),var(--glow-medium)}dialog::backdrop{background:rgba(0,5,16,.76);backdrop-filter:blur(5px)}.dialog-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.dialog-head h2{margin:0}.file-input{font-size:12px;color:var(--text-secondary)}.footer-note{font-size:11px;color:var(--text-muted);text-align:center;padding:18px 4px}
-@media(min-width:700px){body{padding-bottom:24px}.shell{padding:26px 24px}.grid{grid-template-columns:1.05fr .95fr}.two-col{grid-template-columns:1fr 1fr}.hero{padding:32px}.hero h2{font-size:30px}.moods{grid-template-columns:repeat(8,minmax(0,1fr))}.bottom-nav{position:static;max-width:700px;margin:0 auto 20px;border:1px solid rgba(0,210,255,.25);border-radius:18px;padding:7px;background:rgba(4,19,38,.85)}.nav-btn{flex-direction:row;font-size:12px;gap:7px}.toast{bottom:25px}.row-fields{grid-template-columns:1fr 1fr}.settings-grid{grid-template-columns:1fr 1fr}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
-</style>
-</head>
-<body>
-
-<style>
-#firebasePanel{margin:0 auto 18px;max-width:720px;border:1px solid rgba(0,240,255,.45);border-radius:18px;padding:16px;background:rgba(4,19,38,.96);box-shadow:var(--glow-soft)}
-#firebasePanel h2{margin:0 0 5px;font-size:18px}#firebasePanel .auth-grid{display:grid;grid-template-columns:1fr;gap:9px;margin-top:12px}#firebasePanel input{width:100%;min-height:44px;border-radius:10px;border:1px solid rgba(0,210,255,.35);background:#020d20;color:#f3f8ff;padding:10px}#firebasePanel .auth-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}#firebasePanel .auth-msg{font-size:12px;color:var(--text-secondary);margin-top:9px;overflow-wrap:anywhere}#firebasePanel .auth-head{display:flex;justify-content:space-between;align-items:center;gap:8px}#firebasePanel .auth-status{font-size:12px;color:var(--electric-cyan)}@media(min-width:600px){#firebasePanel .auth-grid{grid-template-columns:1fr 1fr}}
-</style>
-<section id="firebasePanel" aria-label="Firebase account and cloud sync">
- <div class="auth-head"><div><h2>☁️ Digital Diary Cloud Sync</h2><div class="sub">Sign in to sync your diary privately across your devices.</div></div><span class="auth-status" id="fbState">Not signed in</span></div>
- <div id="fbSignedOut">
-  <div class="auth-grid"><input id="fbEmail" type="email" autocomplete="email" placeholder="Email address"><input id="fbPassword" type="password" autocomplete="current-password" placeholder="Password"><input id="fbPhone" type="tel" autocomplete="tel" placeholder="Phone number e.g. +91XXXXXXXXXX"><input id="fbOtp" inputmode="numeric" autocomplete="one-time-code" placeholder="SMS verification code" class="hidden"></div>
-  <div class="auth-actions"><button class="btn btn-primary" id="fbEmailLogin">Sign in</button><button class="btn btn-secondary" id="fbSignUp">Create account</button><button class="btn btn-secondary" id="fbGoogle">Continue with Google</button><button class="btn btn-secondary" id="fbReset">Forgot password</button><button class="btn btn-secondary" id="fbSendOtp">Send phone OTP</button><button class="btn btn-secondary hidden" id="fbVerifyOtp">Verify OTP</button></div><div id="fbRecaptcha"></div>
- </div>
- <div id="fbSignedIn" class="hidden"><div class="auth-msg" id="fbUserLabel"></div><div class="auth-actions"><button class="btn btn-secondary" id="fbSyncNow">Sync now</button><button class="btn btn-secondary" id="fbSignOut">Sign out</button></div></div>
- <div class="auth-msg" id="fbMessage">Local diary remains available. Cloud sync starts only after you sign in.</div>
-</section>
-
-<div class="shell">
-<header class="topbar">
-  <div class="brand"><div class="logo" aria-hidden="true">⌁</div><div><h1>NEON DIARY</h1><div class="sub">YOUR PRIVATE MEMORY TERMINAL</div></div></div>
-  <div class="header-actions"><div class="status" id="saveStatus"><i class="dot"></i><span>Local ready</span></div><button class="icon-btn" id="openSettings" aria-label="Open settings" title="Settings">⚙</button></div>
-</header>
-<main>
-<section class="section active" id="section-diary">
-  <div class="hero"><div class="eyebrow">PERSONAL LOG // <span id="todayLabel"></span></div><h2>Write today's entry.</h2><p>Capture the moments, thoughts, and ideas worth keeping. Your diary is saved on this device by default.</p><button class="btn btn-primary" id="newEntryBtn">＋ New diary entry</button></div>
-  <div class="grid">
-    <div class="panel"><div class="panel-head"><h2>How are you feeling?</h2><span class="sub">MOOD SCAN</span></div><div class="moods" id="homeMoods"></div><p class="sub" id="moodHint">Choose a mood for your next entry.</p></div>
-    <div class="panel"><div class="panel-head"><h2>Recent entries</h2><button class="btn btn-secondary" data-go="entries">View all</button></div><div class="entry-list" id="recentEntries"></div></div>
-    <div class="panel"><div class="panel-head"><h2>Quick notes</h2><button class="btn btn-secondary" id="quickNoteBtn">＋ Add note</button></div><div class="note-list" id="recentNotes"></div></div>
-    <div class="panel"><div class="panel-head"><h2>Monthly calendar</h2><button class="btn btn-secondary" data-go="calendar">Open</button></div><div class="calendar-top"><button class="icon-btn" id="miniPrev" aria-label="Previous month">‹</button><strong id="miniMonth"></strong><button class="icon-btn" id="miniNext" aria-label="Next month">›</button></div><div class="calendar-grid" id="miniCalendar"></div><p class="sub" id="miniSelected"></p></div>
-  </div>
-</section>
-<section class="section" id="section-entries">
-  <div class="panel"><div class="panel-head"><div><div class="eyebrow">MEMORY ARCHIVE</div><h2>Diary entries</h2></div><button class="btn btn-primary" id="entriesNewBtn">＋ New</button></div>
-  <input class="searchbox" id="entrySearch" placeholder="Search title, content, or tags…" aria-label="Search diary entries">
-  <div class="row-fields" style="margin-top:10px"><div class="field"><label for="moodFilter">Mood</label><select id="moodFilter"><option value="">All moods</option></select></div><div class="field"><label for="tagFilter">Tag contains</label><input id="tagFilter" placeholder="e.g. family"></div></div>
-  <div class="row-fields"><div class="field"><label for="dateFrom">From date</label><input id="dateFrom" type="date"></div><div class="field"><label for="dateTo">To date</label><input id="dateTo" type="date"></div></div>
-  <div class="panel-head"><span class="sub" id="entryCount">0 entries</span><div style="display:flex;gap:7px"><select id="sortEntries" aria-label="Sort entries" class="searchbox" style="width:auto;padding:8px"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="updated">Recently updated</option></select><button class="btn btn-secondary" id="clearFilters">Clear</button></div></div>
-  <div class="entry-list" id="allEntries"></div></div>
-</section>
-<section class="section" id="section-notes">
-  <div class="panel"><div class="panel-head"><div><div class="eyebrow">SCRATCHPAD</div><h2>Quick notes</h2></div><button class="btn btn-primary" id="notesNewBtn">＋ New note</button></div><input class="searchbox" id="noteSearch" placeholder="Search notes…" aria-label="Search notes"><div class="note-list" id="allNotes" style="margin-top:13px"></div></div>
-</section>
-<section class="section" id="section-calendar">
-  <div class="panel"><div class="eyebrow">TIME MATRIX</div><div class="calendar-top"><button class="icon-btn" id="calPrev" aria-label="Previous month">‹</button><h2 id="calMonth" style="margin:0"></h2><button class="icon-btn" id="calNext" aria-label="Next month">›</button></div><div class="calendar-grid" id="fullCalendar"></div><hr class="divider"><div class="panel-head"><h2 id="selectedDateTitle">Selected date</h2><button class="btn btn-primary" id="entryForDate">＋ Write for date</button></div><div id="dateEntries" class="entry-list"></div></div>
-</section>
-<section class="section" id="section-more">
-  <div class="panel"><div class="eyebrow">SYSTEM CONSOLE</div><h2>More tools</h2><div class="settings-grid">
-    <button class="btn btn-secondary" id="moreTasks">☑ Tasks & reminders</button><button class="btn btn-secondary" id="moreSettings">⚙ Settings</button><button class="btn btn-secondary" id="exportBtn">⇩ Export backup</button><button class="btn btn-secondary" id="importBtn">⇧ Import backup</button><button class="btn btn-secondary" id="textExportBtn">▤ Export diary as text</button><button class="btn btn-secondary" id="storageBtn">▣ Storage information</button>
-  </div><hr class="divider"><div class="notice">This single-file edition saves data locally on this browser. Cloud login and cloud sync are not enabled until you configure Firebase and deploy the matching security rules.</div><p class="small muted">Local data can be lost if browser site data is cleared. Export a backup regularly and keep it somewhere safe.</p></div>
-  <div class="panel" id="tasksPanel" style="margin-top:16px"><div class="panel-head"><h2>Tasks & reminders</h2><button class="btn btn-primary" id="addTaskBtn">＋ Add task</button></div><div id="taskForm" class="hidden"><div class="field"><label for="taskTitle">Task</label><input id="taskTitle" maxlength="180" placeholder="What do you need to do?"></div><div class="row-fields"><div class="field"><label for="taskDate">Due date</label><input id="taskDate" type="date"></div><div class="field"><label for="taskTime">Time (optional)</label><input id="taskTime" type="time"></div></div><div class="editor-actions"><button class="btn btn-primary" id="saveTaskBtn">Save task</button><button class="btn" id="cancelTaskBtn">Cancel</button></div></div><div class="task-list" id="tasksList"></div><p class="sub">Browser reminders may not run while this app is closed or the device is offline.</p></div>
-
-  <div class="panel" id="smartAlarmPanel" style="margin-top:16px">
-    <div class="panel-head"><div><div class="eyebrow">SMART WAKE SYSTEM</div><h2>⏰ Smart Alarm & Reminders</h2></div><button class="btn btn-primary" id="alarmAddBtn">＋ Add alarm</button></div>
-    <div class="notice">Browser-only mode: alarms can sound only while this page is open and allowed to run. For reliable background/offline Android alarms, a native APK with AlarmManager, receiver and notification permissions is required.</div>
-    <div class="row-fields"><div class="field"><label for="alarmSearch">Search alarms</label><input id="alarmSearch" placeholder="Search title or description"></div><div class="field"><label for="alarmFilter">Filter</label><select id="alarmFilter"><option value="all">All alarms</option><option value="enabled">Enabled</option><option value="disabled">Disabled</option></select></div></div>
-    <div id="alarmForm" class="hidden">
-      <input id="alarmEditId" type="hidden"><div class="field"><label for="alarmTitle">Reminder title</label><input id="alarmTitle" maxlength="160" placeholder="e.g. Doctor appointment" required></div>
-      <div class="field"><label for="alarmDescription">Description (optional)</label><textarea id="alarmDescription" rows="3" placeholder="Additional details…" style="min-height:80px"></textarea></div>
-      <div class="row-fields"><div class="field"><label for="alarmDate">Date</label><input id="alarmDate" type="date" required></div><div class="field"><label for="alarmTime">Time</label><input id="alarmTime" type="time" required></div></div>
-      <div class="row-fields"><div class="field"><label for="alarmRepeat">Repeat</label><select id="alarmRepeat"><option value="none">One time</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="weekdays">Selected weekdays</option></select></div><div class="field"><label for="alarmTone">Ringtone</label><select id="alarmTone"><option value="digital">Premium Digital Alarm</option><option value="classic">Classic Alarm Clock</option><option value="gentle">Gentle Morning</option><option value="piano">Soft Piano</option><option value="nature">Nature & Birds</option><option value="rain">Rain & Ambient</option><option value="energetic">Energetic Wake-Up</option><option value="custom">Custom audio file</option></select></div></div>
-      <div class="field" id="weekdaysField" style="display:none"><label>Repeat on</label><div class="checkboxline" style="flex-wrap:wrap"> <label><input type="checkbox" value="1" class="alarmWeekday"> Mon</label><label><input type="checkbox" value="2" class="alarmWeekday"> Tue</label><label><input type="checkbox" value="3" class="alarmWeekday"> Wed</label><label><input type="checkbox" value="4" class="alarmWeekday"> Thu</label><label><input type="checkbox" value="5" class="alarmWeekday"> Fri</label><label><input type="checkbox" value="6" class="alarmWeekday"> Sat</label><label><input type="checkbox" value="0" class="alarmWeekday"> Sun</label></div></div>
-      <div class="row-fields"><div class="field"><label for="alarmSnooze">Snooze minutes</label><select id="alarmSnooze"><option value="5">5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option></select></div><div class="field"><label for="alarmVolume">Preview volume</label><input id="alarmVolume" type="range" min="0.1" max="1" step="0.1" value="0.6"></div></div>
-      <div class="field"><label for="alarmCustomFile">Custom ringtone (supported audio files)</label><input id="alarmCustomFile" type="file" accept="audio/*" class="file-input"><small class="sub">Custom audio is stored only for this page session; reselect it after reopening.</small></div>
-      <div class="editor-actions"><button class="btn btn-secondary" id="alarmPreviewBtn" type="button">▶ Preview ringtone</button><button class="btn btn-primary" id="alarmSaveBtn" type="button">Save alarm</button><button class="btn" id="alarmCancelBtn" type="button">Cancel</button></div>
-    </div>
-    <div id="alarmRinging" class="notice hidden" role="alert"><strong id="ringingTitle">Alarm</strong><p id="ringingDescription"></p><div class="editor-actions"><button class="btn btn-primary" id="alarmSnoozeBtn">Snooze</button><button class="btn btn-danger" id="alarmStopBtn">Stop</button></div></div>
-    <p class="sub" id="nextAlarmLabel">Next alarm: none</p><div class="task-list" id="alarmList"></div>
-  </div>
-</section>
-<section class="section" id="section-editor"><div class="panel"><div class="panel-head"><div><div class="eyebrow">PRIVATE COMPOSITION</div><h2 id="editorHeading">New diary entry</h2></div><button class="btn btn-secondary" id="closeEditorBtn">Close</button></div>
-  <div class="field"><label for="entryTitle">Title</label><input id="entryTitle" maxlength="180" placeholder="Give this memory a title…"></div>
-  <div class="row-fields"><div class="field"><label for="entryDate">Entry date</label><input id="entryDate" type="date" required></div><div class="field"><label for="entryMood">Mood</label><select id="entryMood"></select></div></div>
-  <div class="field"><label for="entryTags">Tags (comma-separated)</label><input id="entryTags" maxlength="300" placeholder="family, work, ideas"></div>
-  <div class="field"><label for="entryContent">Your thoughts</label><textarea id="entryContent" placeholder="Start writing… your thoughts stay on this device." spellcheck="true"></textarea><div class="counter"><span id="wordCount">0 words</span><span id="charCount">0 characters</span></div></div>
-  <div class="editor-actions"><button class="btn btn-primary" id="saveEntryBtn">Save entry</button><button class="btn btn-secondary" id="previewBtn">Preview</button><button class="btn" id="cancelEntryBtn">Cancel</button><button class="btn btn-danger hidden" id="deleteEntryBtn">Delete</button></div><p class="sub" id="draftStatus" style="margin-top:12px">Draft recovery is enabled on this device.</p>
-</div></section>
-</main><div class="footer-note">NEON DIARY · LOCAL-FIRST MEMORY SYSTEM</div>
-</div>
-<nav class="bottom-nav" aria-label="Main navigation"><button class="nav-btn active" data-nav="diary"><span>⌂</span><span>Diary</span></button><button class="nav-btn" data-nav="entries"><span>▤</span><span>Entries</span></button><button class="nav-btn" data-nav="notes"><span>✎</span><span>Notes</span></button><button class="nav-btn" data-nav="calendar"><span>▦</span><span>Calendar</span></button><button class="nav-btn" data-nav="more"><span>⋯</span><span>More</span></button></nav>
-<dialog id="noteDialog"><div class="dialog-head"><h2 id="noteDialogTitle">Quick note</h2><button class="icon-btn" id="closeNoteDialog" aria-label="Close note">×</button></div><div class="field"><label for="noteTitle">Title</label><input id="noteTitle" maxlength="180" placeholder="Note title"></div><div class="field"><label for="noteContent">Note</label><textarea id="noteContent" rows="8" maxlength="20000" placeholder="Write a quick note…"></textarea></div><div class="editor-actions"><button class="btn btn-primary" id="saveNoteBtn">Save note</button><button class="btn btn-danger hidden" id="deleteNoteBtn">Delete note</button></div></dialog>
-<dialog id="settingsDialog"><div class="dialog-head"><h2>Settings & backup</h2><button class="icon-btn" id="closeSettingsDialog" aria-label="Close settings">×</button></div><div class="settings-grid"><div class="field"><label for="autosaveSetting">Autosave delay</label><select id="autosaveSetting"><option value="1000">1 second</option><option value="1500">1.5 seconds</option><option value="2500">2.5 seconds</option><option value="0">Manual save only</option></select></div><div class="field"><label for="fontSetting">Writing text size</label><select id="fontSetting"><option value="15">Comfortable</option><option value="17">Large</option><option value="19">Extra large</option></select></div></div><div class="editor-actions"><button class="btn btn-primary" id="saveSettingsBtn">Save preferences</button><button class="btn btn-secondary" id="settingsExportBtn">Export JSON backup</button><button class="btn btn-secondary" id="settingsImportBtn">Import JSON backup</button><button class="btn btn-danger" id="clearAllBtn">Delete all local data</button></div><hr class="divider"><div class="notice">Firebase cloud sync requires a valid Web API key, enabled Authentication providers, and private Firestore rules. Your entries remain saved locally if cloud sync is unavailable.</div><p class="small muted" id="storageDetails"></p></dialog>
-<dialog id="previewDialog"><div class="dialog-head"><h2>Entry preview</h2><button class="icon-btn" id="closePreview" aria-label="Close preview">×</button></div><div id="previewBody"></div></dialog>
-<dialog id="importDialog"><div class="dialog-head"><h2>Review backup import</h2><button class="icon-btn" id="closeImport" aria-label="Close import">×</button></div><p id="importSummary"></p><div class="field"><label for="importMode">When a record ID already exists</label><select id="importMode"><option value="skip">Skip duplicate IDs</option><option value="replace">Replace existing records</option><option value="keep">Keep both (new IDs)</option></select></div><p class="small muted">Import is validated before changes are applied. Imported content is treated as plain text.</p><button class="btn btn-primary" id="applyImport">Apply import</button></dialog>
-<input type="file" id="backupFile" accept=".json,application/json" class="hidden">
-<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
-<script>
-(() => {
-'use strict';
-const $=id=>document.getElementById(id);
-const KEY='neonDiary.v1.data', PREF='neonDiary.v1.preferences', DRAFT='neonDiary.v1.draft';
-const moods=[['happy','😊','Happy'],['calm','😌','Calm'],['normal','😐','Normal'],['sad','😔','Sad'],['angry','😠','Angry'],['excited','🤩','Excited'],['grateful','🙏','Grateful'],['anxious','😟','Anxious']];
-const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
-const uid=()=>crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random().toString(36).slice(2)}`;
-const safe=(s)=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const dateLabel=s=>{if(!s)return '';const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})};
-const timeLabel=s=>{try{return new Date(s).toLocaleString()}catch{return ''}};
-let data={entries:[],notes:[],tasks:[]}, prefs={autosave:1500,fontSize:15}, editorId=null, draftMood='normal', noteId=null, taskId=null, selectedDate=today(), calendarDate=new Date(), dirty=false, autosaveTimer=null, pendingImport=null;
-function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');data={entries:Array.isArray(x.entries)?x.entries:[],notes:Array.isArray(x.notes)?x.notes:[],tasks:Array.isArray(x.tasks)?x.tasks:[]}}catch{data={entries:[],notes:[],tasks:[]};toast('Local data could not be read. A fresh local store was opened.')}try{prefs={...prefs,...JSON.parse(localStorage.getItem(PREF)||'{}')}}catch{}}
-function persist(show=true){try{localStorage.setItem(KEY,JSON.stringify(data));window.dispatchEvent(new CustomEvent('diary-local-change'));if(show)setStatus('Saved locally','success');return true}catch(e){setStatus('Storage error','error');toast('Could not save. Export a backup and free browser storage.');return false}}
-function setStatus(msg,type=''){const el=$('saveStatus');el.innerHTML=`<i class="dot" style="background:${type==='error'?'var(--error)':type==='pending'?'var(--warning)':'var(--success)'}"></i><span>${safe(msg)}</span>`}
-let toastTimer;function toast(msg){$('toast').textContent=msg;$('toast').classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.add('hidden'),2800)}
-function moodName(v){return moods.find(m=>m[0]===v)?.[2]||'Normal'}function moodEmoji(v){return moods.find(m=>m[0]===v)?.[1]||'😐'}
-function showSection(name){if(name==='editor'){return}if(dirty&&editorId!==null){if(!confirm('You have unsaved changes. Save them before leaving?'))return;saveEntry()}document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===`section-${name}`));document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===name));if(name==='entries')renderEntries();if(name==='notes')renderNotes();if(name==='calendar')renderCalendar();if(name==='more')renderTasks();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}
-function moodButtons(container){$(container).innerHTML=moods.map(m=>`<button class="mood-btn" data-mood="${m[0]}" aria-pressed="false"><span>${m[1]}</span><span>${m[2]}</span></button>`).join('');$(container).querySelectorAll('[data-mood]').forEach(b=>b.onclick=()=>{draftMood=b.dataset.mood;updateMoodButtons();$('moodHint').textContent=`Selected mood: ${moodName(draftMood)}. It will be saved with your next entry.`})}
-function updateMoodButtons(){document.querySelectorAll('[data-mood]').forEach(b=>{b.classList.toggle('selected',b.dataset.mood===draftMood);b.setAttribute('aria-pressed',String(b.dataset.mood===draftMood))})}
-function entryCard(e){const preview=(e.content||'').slice(0,150);return `<article class="entry-card"><h3>${safe(e.title||'Untitled entry')}</h3><div class="meta"><span>${safe(dateLabel(e.date))}</span><span>${moodEmoji(e.mood)} ${safe(moodName(e.mood))}</span>${e.pinned?'<span>📌 Pinned</span>':''}</div><p>${safe(preview)}${(e.content||'').length>150?'…':''}</p><div class="meta">${(e.tags||[]).map(t=>`<span class="tag">${safe(t)}</span>`).join('')}</div><div class="card-actions"><button class="btn btn-secondary" data-edit-entry="${safe(e.id)}">Open / edit</button><button class="btn btn-secondary" data-pin-entry="${safe(e.id)}">${e.pinned?'Unpin':'Pin'}</button></div></article>`}
-function bindEntryCards(root){$(root).querySelectorAll('[data-edit-entry]').forEach(b=>b.onclick=()=>openEditor(b.dataset.editEntry));$(root).querySelectorAll('[data-pin-entry]').forEach(b=>b.onclick=()=>{const e=data.entries.find(x=>x.id===b.dataset.pinEntry);if(e){e.pinned=!e.pinned;e.updatedAt=Date.now();persist();renderAll()}})}
-function renderRecent(){const entries=[...data.entries].sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.updatedAt||0)-(a.updatedAt||0)).slice(0,3);$('recentEntries').innerHTML=entries.length?entries.map(entryCard).join(''):'<div class="empty">No entries yet.<br>Start by writing your first memory.</div>';bindEntryCards('recentEntries');const notes=[...data.notes].sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.updatedAt||0)-(a.updatedAt||0)).slice(0,3);$('recentNotes').innerHTML=notes.length?notes.map(noteCard).join(''):'<div class="empty">Your quick notes will appear here.</div>';bindNoteCards('recentNotes')}
-function renderEntries(){const q=$('entrySearch').value.trim().toLowerCase(),m=$('moodFilter').value,t=$('tagFilter').value.trim().toLowerCase(),from=$('dateFrom').value,to=$('dateTo').value,sort=$('sortEntries').value;let arr=data.entries.filter(e=>(!q||`${e.title} ${e.content} ${(e.tags||[]).join(' ')}`.toLowerCase().includes(q))&&(!m||e.mood===m)&&(!t||(e.tags||[]).some(x=>x.toLowerCase().includes(t)))&&(!from||e.date>=from)&&(!to||e.date<=to));arr.sort((a,b)=>sort==='oldest'?(a.date||'').localeCompare(b.date||''):sort==='updated'?(b.updatedAt||0)-(a.updatedAt||0):(b.date||'').localeCompare(a.date||''));$('entryCount').textContent=`${arr.length} ${arr.length===1?'entry':'entries'}`;$('allEntries').innerHTML=arr.length?arr.map(entryCard).join(''):'<div class="empty">No entries match these filters.</div>';bindEntryCards('allEntries')}
-function openEditor(id=null,date=today()){editorId=id;const e=data.entries.find(x=>x.id===id);$('editorHeading').textContent=e?'Edit diary entry':'New diary entry';$('entryTitle').value=e?.title||'';$('entryDate').value=e?.date||date;$('entryMood').value=e?.mood||draftMood||'normal';$('entryTags').value=(e?.tags||[]).join(', ');$('entryContent').value=e?.content||'';$('deleteEntryBtn').classList.toggle('hidden',!e);dirty=false;updateCounters();$('draftStatus').textContent='Draft recovery is enabled on this device.';if(!e){try{const d=JSON.parse(localStorage.getItem(DRAFT)||'null');if(d&&d.date===date&&confirm('Recover the unsaved draft from this device?')){$('entryTitle').value=d.title||'';$('entryDate').value=d.date||date;$('entryMood').value=d.mood||'normal';$('entryTags').value=d.tags||'';$('entryContent').value=d.content||'';toast('Draft recovered.')}}catch{}}document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id==='section-editor'));document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',false));window.scrollTo({top:0,behavior:'auto'});$('entryTitle').focus()}
-function updateCounters(){const c=$('entryContent').value.trim();$('wordCount').textContent=`${c?c.split(/\s+/u).length:0} words`;$('charCount').textContent=`${$('entryContent').value.length} characters`}
-function draftSnapshot(){return {title:$('entryTitle').value,date:$('entryDate').value,mood:$('entryMood').value,tags:$('entryTags').value,content:$('entryContent').value}}
-function onDraftChange(){dirty=true;setStatus('Draft changed','pending');try{localStorage.setItem(DRAFT,JSON.stringify(draftSnapshot()))}catch{}clearTimeout(autosaveTimer);if(prefs.autosave>0){autosaveTimer=setTimeout(()=>saveEntry(true),prefs.autosave)}}
-function saveEntry(automatic=false){const title=$('entryTitle').value.trim(),content=$('entryContent').value.trim(),date=$('entryDate').value||today();if(!title&&!content){if(!automatic)toast('Add a title or some writing first.');return false}const now=Date.now(),tags=[...new Set($('entryTags').value.split(',').map(x=>x.trim()).filter(Boolean))];let e=editorId?data.entries.find(x=>x.id===editorId):null;if(e){Object.assign(e,{title:title||'Untitled entry',content,date,mood:$('entryMood').value,tags,updatedAt:now})}else{e={id:uid(),title:title||'Untitled entry',content,date,mood:$('entryMood').value,tags,createdAt:now,updatedAt:now,pinned:false};data.entries.push(e);editorId=e.id;$('deleteEntryBtn').classList.remove('hidden');$('editorHeading').textContent='Edit diary entry'}if(!persist(false))return false;try{localStorage.removeItem(DRAFT)}catch{}dirty=false;$('draftStatus').textContent=automatic?'Autosaved locally.':'Saved locally on this device.';setStatus('Saved locally','success');renderAll();if(!automatic)toast('Entry saved on this device.');return true}
-function closeEditor(){if(dirty){if(confirm('Save your changes before closing?')){if(!saveEntry())return}else if(!confirm('Discard the current unsaved changes?'))return}showSection('diary')}
-function deleteEntry(){if(!editorId)return;const e=data.entries.find(x=>x.id===editorId);if(!e||!confirm(`Permanently delete "${e.title}" from this device?`))return;data.entries=data.entries.filter(x=>x.id!==editorId);persist();dirty=false;localStorage.removeItem(DRAFT);showSection('entries');renderAll();toast('Entry deleted locally.')}
-function noteCard(n){return `<article class="note-card"><h3>${n.pinned?'📌 ':''}${safe(n.title||'Untitled note')}</h3><p>${safe((n.content||'').slice(0,130))}${(n.content||'').length>130?'…':''}</p><div class="meta">Updated ${safe(timeLabel(n.updatedAt))}</div><div class="card-actions"><button class="btn btn-secondary" data-edit-note="${safe(n.id)}">Open / edit</button><button class="btn btn-secondary" data-pin-note="${safe(n.id)}">${n.pinned?'Unpin':'Pin'}</button></div></article>`}
-function bindNoteCards(root){$(root).querySelectorAll('[data-edit-note]').forEach(b=>b.onclick=()=>openNote(b.dataset.editNote));$(root).querySelectorAll('[data-pin-note]').forEach(b=>b.onclick=()=>{const n=data.notes.find(x=>x.id===b.dataset.pinNote);if(n){n.pinned=!n.pinned;n.updatedAt=Date.now();persist();renderAll()}})}
-function renderNotes(){const q=$('noteSearch').value.trim().toLowerCase();const arr=data.notes.filter(n=>!q||`${n.title} ${n.content}`.toLowerCase().includes(q)).sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.updatedAt||0)-(a.updatedAt||0));$('allNotes').innerHTML=arr.length?arr.map(noteCard).join(''):'<div class="empty">No notes found. Add a quick note to get started.</div>';bindNoteCards('allNotes')}
-function openNote(id=null){noteId=id;const n=data.notes.find(x=>x.id===id);$('noteDialogTitle').textContent=n?'Edit quick note':'New quick note';$('noteTitle').value=n?.title||'';$('noteContent').value=n?.content||'';$('deleteNoteBtn').classList.toggle('hidden',!n);$('noteDialog').showModal()}
-function saveNote(){const title=$('noteTitle').value.trim(),content=$('noteContent').value.trim();if(!title&&!content){toast('Enter a note title or content.');return}const now=Date.now();let n=data.notes.find(x=>x.id===noteId);if(n)Object.assign(n,{title:title||'Untitled note',content,updatedAt:now});else data.notes.push({id:uid(),title:title||'Untitled note',content,createdAt:now,updatedAt:now,pinned:false});persist();$('noteDialog').close();renderAll();toast('Note saved locally.')}
-function deleteNote(){if(!noteId||!confirm('Delete this note?'))return;data.notes=data.notes.filter(n=>n.id!==noteId);persist();$('noteDialog').close();renderAll()}
-function monthTitle(d){return d.toLocaleDateString(undefined,{month:'long',year:'numeric'})}
-function calendarHTML(d){const year=d.getFullYear(),month=d.getMonth(),first=new Date(year,month,1).getDay(),days=new Date(year,month+1,0).getDate();let out=['Su','Mo','Tu','We','Th','Fr','Sa'].map(x=>`<div class="weekday">${x}</div>`).join('');for(let i=0;i<first;i++)out+='<div></div>';for(let day=1;day<=days;day++){const date=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`,has=data.entries.some(e=>e.date===date);out+=`<button class="day ${date===today()?'today':''} ${date===selectedDate?'selected':''} ${has?'has-entry':''}" data-date="${date}" aria-label="${date}${has?', has diary entries':''}" aria-pressed="${date===selectedDate}">${day}</button>`}return out}
-function renderCalendar(){const render=(id,monthId)=>{$(monthId).textContent=monthTitle(calendarDate);$(id).innerHTML=calendarHTML(calendarDate);$(id).querySelectorAll('[data-date]').forEach(b=>b.onclick=()=>{selectedDate=b.dataset.date;renderCalendar()})};render('fullCalendar','calMonth');render('miniCalendar','miniMonth');$('selectedDateTitle').textContent=dateLabel(selectedDate);$('miniSelected').textContent=`Selected: ${dateLabel(selectedDate)}`;const arr=data.entries.filter(e=>e.date===selectedDate);$('dateEntries').innerHTML=arr.length?arr.map(entryCard).join(''):'<div class="empty">No entries on this date.</div>';bindEntryCards('dateEntries')}
-function shiftMonth(delta){calendarDate=new Date(calendarDate.getFullYear(),calendarDate.getMonth()+delta,1);renderCalendar()}
-function renderTasks(){const arr=[...data.tasks].sort((a,b)=>(a.done?1:0)-(b.done?1:0)||(a.date||'').localeCompare(b.date||''));$('tasksList').innerHTML=arr.length?arr.map(t=>`<div class="task-card"><input type="checkbox" data-task-done="${safe(t.id)}" ${t.done?'checked':''} aria-label="Mark task complete"><div class="task-text ${t.done?'done':''}"><strong>${safe(t.title)}</strong><div class="meta">${t.date?safe(dateLabel(t.date)):''} ${t.time?safe(t.time):''} ${t.date&&t.date<today()&&!t.done?'<span style="color:var(--error)">Overdue</span>':''}</div><div class="card-actions"><button class="btn btn-secondary" data-task-edit="${safe(t.id)}">Edit</button><button class="btn btn-danger" data-task-delete="${safe(t.id)}">Delete</button></div></div></div>`).join(''):'<div class="empty">No tasks yet.</div>';$('tasksList').querySelectorAll('[data-task-done]').forEach(b=>b.onchange=()=>{const t=data.tasks.find(x=>x.id===b.dataset.taskDone);if(t){t.done=b.checked;t.updatedAt=Date.now();persist();renderTasks()}});$('tasksList').querySelectorAll('[data-task-edit]').forEach(b=>b.onclick=()=>{const t=data.tasks.find(x=>x.id===b.dataset.taskEdit);if(!t)return;taskId=t.id;$('taskTitle').value=t.title;$('taskDate').value=t.date||'';$('taskTime').value=t.time||'';$('taskForm').classList.remove('hidden');$('saveTaskBtn').textContent='Update task'});$('tasksList').querySelectorAll('[data-task-delete]').forEach(b=>b.onclick=()=>{if(confirm('Delete this task?')){data.tasks=data.tasks.filter(t=>t.id!==b.dataset.taskDelete);persist();renderTasks()}})}
-function saveTask(){const title=$('taskTitle').value.trim();if(!title){toast('Enter a task name.');return}const now=Date.now();let t=data.tasks.find(x=>x.id===taskId);if(t)Object.assign(t,{title,date:$('taskDate').value,time:$('taskTime').value,updatedAt:now});else data.tasks.push({id:uid(),title,date:$('taskDate').value,time:$('taskTime').value,done:false,createdAt:now,updatedAt:now});taskId=null;$('taskTitle').value='';$('taskDate').value='';$('taskTime').value='';$('taskForm').classList.add('hidden');$('saveTaskBtn').textContent='Save task';persist();renderTasks();toast('Task saved locally.')}
-function renderAll(){renderRecent();renderEntries();renderNotes();renderCalendar();renderTasks()}window.renderAll=renderAll;
-function exportJSON(){const backup={schemaVersion:1,exportedAt:new Date().toISOString(),app:'NEON DIARY',data,prefs};const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});downloadBlob(blob,`neon-diary-backup-${today()}.json`);toast('Backup exported. Keep it somewhere safe.')}
-function downloadBlob(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function exportText(){const text=data.entries.slice().sort((a,b)=>(a.date||'').localeCompare(b.date||'')).map(e=>`# ${e.title||'Untitled entry'}\n\nDate: ${e.date||''}\nMood: ${moodName(e.mood)}\nTags: ${(e.tags||[]).join(', ')}\n\n${e.content||''}\n\n---\n`).join('\n');downloadBlob(new Blob([text],{type:'text/markdown;charset=utf-8'}),`neon-diary-entries-${today()}.md`)}
-function beginImport(){ $('backupFile').click()}
-$('backupFile').addEventListener('change',async ev=>{const f=ev.target.files?.[0];ev.target.value='';if(!f)return;if(f.size>5*1024*1024){toast('Backup is too large (maximum 5 MB).');return}try{const x=JSON.parse(await f.text());if(x.schemaVersion!==1||!x.data||!Array.isArray(x.data.entries)||!Array.isArray(x.data.notes)||!Array.isArray(x.data.tasks))throw Error('Invalid backup structure');for(const group of ['entries','notes','tasks']){if(x.data[group].length>10000)throw Error('Too many records');for(const item of x.data[group])if(!item||typeof item.id!=='string'||item.id.length>200)throw Error('Invalid record ID')}pendingImport=x;$('importSummary').textContent=`Found ${x.data.entries.length} entries, ${x.data.notes.length} notes, and ${x.data.tasks.length} tasks. Exported at ${x.exportedAt||'unknown time'}.`; $('importDialog').showModal()}catch(e){toast(`Import rejected: ${e.message||'invalid JSON'}`)}});
-function applyImport(){if(!pendingImport)return;const mode=$('importMode').value;let stats={added:0,skipped:0};for(const group of ['entries','notes','tasks']){const target=data[group],incoming=pendingImport.data[group];for(const raw of incoming){let item=JSON.parse(JSON.stringify(raw));const old=target.find(x=>x.id===item.id);if(old){if(mode==='skip'){stats.skipped++;continue}if(mode==='replace'){Object.assign(old,item);stats.added++;continue}item.id=uid()}target.push(item);stats.added++}}persist();pendingImport=null;$('importDialog').close();renderAll();toast(`Import finished: ${stats.added} added/replaced, ${stats.skipped} skipped.`)}
-function storageInfo(){let size=0;try{size=new Blob([localStorage.getItem(KEY)||'']).size+new Blob([localStorage.getItem(PREF)||'']).size}catch{}const msg=`Approximate local data size: ${(size/1024).toFixed(1)} KB. Records: ${data.entries.length} entries, ${data.notes.length} notes, ${data.tasks.length} tasks. Local cache size only; see the cloud status above to confirm sync.`;$('storageDetails').textContent=msg;toast(msg)}
-function openSettings(){ $('autosaveSetting').value=String(prefs.autosave);$('fontSetting').value=String(prefs.fontSize);storageInfo();$('settingsDialog').showModal()}
-function saveSettings(){prefs.autosave=Number($('autosaveSetting').value);prefs.fontSize=Number($('fontSetting').value);localStorage.setItem(PREF,JSON.stringify(prefs));$('entryContent').style.fontSize=`${prefs.fontSize}px`;$('settingsDialog').close();toast('Preferences saved.')}
-function clearAll(){if(!confirm('Delete ALL diary entries, notes, and tasks stored on this device? Export a backup first if needed.'))return;if(!confirm('This cannot be undone. Delete all local records now?'))return;data={entries:[],notes:[],tasks:[]};persist();localStorage.removeItem(DRAFT);$('settingsDialog').close();renderAll();toast('All local records deleted.')}
-function preview(){const title=$('entryTitle').value||'Untitled entry';$('previewBody').innerHTML=`<h2>${safe(title)}</h2><div class="meta">${safe(dateLabel($('entryDate').value))} · ${moodEmoji($('entryMood').value)} ${safe(moodName($('entryMood').value))}</div><p class="meta">${safe($('entryTags').value)}</p><hr class="divider"><div style="white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8">${safe($('entryContent').value)}</div>`;$('previewDialog').showModal()}
-function init(){load();$('todayLabel').textContent=new Date().toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});moodButtons('homeMoods');$('entryMood').innerHTML=moods.map(m=>`<option value="${m[0]}">${m[1]} ${m[2]}</option>`).join('');$('moodFilter').innerHTML='<option value="">All moods</option>'+moods.map(m=>`<option value="${m[0]}">${m[1]} ${m[2]}</option>`).join('');$('entryDate').value=today();$('entryContent').style.fontSize=`${prefs.fontSize}px`;draftMood='normal';updateMoodButtons();renderAll();
-document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>showSection(b.dataset.nav));document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>showSection(b.dataset.go));
-$('newEntryBtn').onclick=()=>openEditor();$('entriesNewBtn').onclick=()=>openEditor();$('quickNoteBtn').onclick=()=>openNote();$('notesNewBtn').onclick=()=>openNote();$('entryForDate').onclick=()=>openEditor(null,selectedDate);
-$('miniPrev').onclick=$('calPrev').onclick=()=>shiftMonth(-1);$('miniNext').onclick=$('calNext').onclick=()=>shiftMonth(1);
-['entrySearch','moodFilter','tagFilter','dateFrom','dateTo','sortEntries'].forEach(id=>$(id).addEventListener('input',renderEntries));$('clearFilters').onclick=()=>{['entrySearch','tagFilter','dateFrom','dateTo'].forEach(id=>$(id).value='');$('moodFilter').value='';$('sortEntries').value='newest';renderEntries()};$('noteSearch').addEventListener('input',renderNotes);
-['entryTitle','entryDate','entryMood','entryTags','entryContent'].forEach(id=>$(id).addEventListener('input',()=>{if(id==='entryContent')updateCounters();onDraftChange()}));$('saveEntryBtn').onclick=()=>saveEntry();$('cancelEntryBtn').onclick=closeEditor;$('closeEditorBtn').onclick=closeEditor;$('deleteEntryBtn').onclick=deleteEntry;$('previewBtn').onclick=preview;$('closePreview').onclick=()=>$('previewDialog').close();
-$('closeNoteDialog').onclick=()=>$('noteDialog').close();$('saveNoteBtn').onclick=saveNote;$('deleteNoteBtn').onclick=deleteNote;
-$('openSettings').onclick=openSettings;$('moreSettings').onclick=openSettings;$('closeSettingsDialog').onclick=()=>$('settingsDialog').close();$('saveSettingsBtn').onclick=saveSettings;$('settingsExportBtn').onclick=exportJSON;$('exportBtn').onclick=exportJSON;$('importBtn').onclick=beginImport;$('settingsImportBtn').onclick=beginImport;$('textExportBtn').onclick=exportText;$('storageBtn').onclick=storageInfo;$('closeImport').onclick=()=>$('importDialog').close();$('applyImport').onclick=applyImport;$('clearAllBtn').onclick=clearAll;
-$('moreTasks').onclick=()=>{$('tasksPanel').scrollIntoView({behavior:'smooth'});$('taskTitle').focus()};$('addTaskBtn').onclick=()=>{$('taskForm').classList.remove('hidden');taskId=null;$('taskTitle').value='';$('taskDate').value='';$('taskTime').value='';$('saveTaskBtn').textContent='Save task'};$('cancelTaskBtn').onclick=()=>{$('taskForm').classList.add('hidden');taskId=null};$('saveTaskBtn').onclick=saveTask;
-$('fontSetting').addEventListener('change',()=>{});$('entryContent').addEventListener('blur',()=>{if(dirty&&prefs.autosave===0)$('draftStatus').textContent='Unsaved changes — press Save entry.'});
-window.addEventListener('beforeunload',e=>{if(dirty){try{localStorage.setItem(DRAFT,JSON.stringify(draftSnapshot()))}catch{}e.preventDefault();e.returnValue=''}});
-}
-init();
-})();
-</script>
-
-<script>
-(()=>{'use strict';
-const $=id=>document.getElementById(id), STORE='neonDiary.v1.smartAlarms';function alarmToast(message){const el=$('toast');if(!el){console.log(message);return}el.textContent=message;el.classList.remove('hidden');clearTimeout(window.__alarmToastTimer);window.__alarmToastTimer=setTimeout(()=>el.classList.add('hidden'),2600)}let alarms=[],activeAlarm=null,alarmTimer=null,audioCtx=null,previewOsc=[],customAudioUrl=null,customAudio=null;
-try{alarms=JSON.parse(localStorage.getItem(STORE)||'[]');if(!Array.isArray(alarms))alarms=[]}catch{alarms=[]}
-const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(alarms));window.dispatchEvent(new CustomEvent('diary-alarm-change'));return true}catch(e){alarmToast('Could not save alarm on this device: '+e.message);return false}};
-const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const alarmDateLabel=a=>{try{return new Date(a.date+'T'+a.time).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'})}catch{return a.date+' '+a.time}};
-function toneLabel(t){return ({digital:'Premium Digital Alarm',classic:'Classic Alarm Clock',gentle:'Gentle Morning',piano:'Soft Piano',nature:'Nature & Birds',rain:'Rain & Ambient',energetic:'Energetic Wake-Up',custom:'Custom audio'})[t]||t}
-function stopSound(){if(alarmTimer){clearTimeout(alarmTimer);alarmTimer=null}if(customAudio){customAudio.pause();customAudio.currentTime=0}try{previewOsc.forEach(o=>{try{o.stop()}catch{}})}catch{}previewOsc=[]}
-function playTone(type,loop=false){stopSound();const file=$('alarmCustomFile')?.files?.[0];if(type==='custom'){if(file){const url=URL.createObjectURL(file);customAudio=new Audio(url);customAudio.loop=loop;customAudio.volume=Number($('alarmVolume')?.value||.6);customAudio.play().catch(()=>alarmToast('Audio playback was blocked. Tap Preview again.'));return}alarmToast('Select a custom audio file first.');return}
-try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();audioCtx.resume();const patterns={digital:[[880,.15],[660,.15],[880,.15],[660,.25]],classic:[[1000,.25],[800,.25],[1000,.25],[800,.3]],gentle:[[523,.35],[659,.35],[784,.55]],piano:[[392,.35],[523,.35],[659,.6]],nature:[[880,.12],[1175,.12],[988,.2],[784,.3]],rain:[[330,.5],[370,.5],[294,.6]],energetic:[[880,.12],[1046,.12],[1318,.15],[1046,.12]],};const seq=patterns[type]||patterns.digital;let t=audioCtx.currentTime;const volume=Number($('alarmVolume')?.value||.6)*.18;const playOnce=()=>{seq.forEach(([f,d])=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type==='piano'?'triangle':'sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.001,volume),t+.02);g.gain.setValueAtTime(Math.max(.001,volume),t+d*.65);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+d+.03);previewOsc.push(o);t+=d+.03})};playOnce();if(loop){const total=(seq.reduce((a,x)=>a+x[1],0)+.12)*1000;const repeat=()=>{if(!activeAlarm)return;playOnce();alarmTimer=setTimeout(repeat,total)};alarmTimer=setTimeout(repeat,total)}}catch(e){alarmToast('Audio is unavailable in this browser: '+e.message)}}
-function render(){const q=($('alarmSearch').value||'').toLowerCase(),f=$('alarmFilter').value;const arr=alarms.filter(a=>(!q||(a.title+' '+a.description).toLowerCase().includes(q))&&(f==='all'||(f==='enabled'?a.enabled:!a.enabled))).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));$('alarmList').innerHTML=arr.length?arr.map(a=>`<div class="task-card"><div class="task-text"><strong>${esc(a.title)}</strong><div>${esc(a.description)}</div><div class="meta">${esc(alarmDateLabel(a))} · ${esc(a.repeat==='none'?'One time':a.repeat==='daily'?'Daily':a.repeat==='weekly'?'Weekly':'Selected weekdays')} · ${esc(toneLabel(a.tone))} · ${a.enabled?'Enabled':'Disabled'}</div><div class="card-actions"><button class="btn btn-secondary" data-apreview="${esc(a.id)}">▶ Preview</button><button class="btn btn-secondary" data-aedit="${esc(a.id)}">Edit</button><button class="btn btn-secondary" data-ashare="${esc(a.id)}">Share reminder</button><button class="btn btn-secondary" data-acopy="${esc(a.id)}">Copy text</button><button class="btn btn-secondary" data-atoggle="${esc(a.id)}">${a.enabled?'Disable':'Enable'}</button><button class="btn btn-danger" data-adelete="${esc(a.id)}">Delete</button></div></div></div>`).join(''):'<div class="empty">No alarms found. Add your first reminder.</div>';document.querySelectorAll('[data-apreview]').forEach(b=>b.onclick=()=>{const a=alarms.find(x=>x.id===b.dataset.apreview);if(a)playTone(a.tone,false)});document.querySelectorAll('[data-aedit]').forEach(b=>b.onclick=()=>editAlarm(b.dataset.aedit));document.querySelectorAll('[data-ashare]').forEach(b=>b.onclick=()=>shareAlarm(b.dataset.ashare));document.querySelectorAll('[data-acopy]').forEach(b=>b.onclick=()=>copyAlarm(b.dataset.acopy));document.querySelectorAll('[data-atoggle]').forEach(b=>b.onclick=()=>{const a=alarms.find(x=>x.id===b.dataset.atoggle);if(a){a.enabled=!a.enabled;save();render();scheduleNext()}});document.querySelectorAll('[data-adelete]').forEach(b=>b.onclick=()=>{if(confirm('Delete this alarm?')){alarms=alarms.filter(x=>x.id!==b.dataset.adelete);save();render();scheduleNext()}});scheduleNext()}
-function resetForm(){ $('alarmEditId').value='';$('alarmTitle').value='';$('alarmDescription').value='';$('alarmDate').value=new Date(Date.now()+60000).toISOString().slice(0,10);$('alarmTime').value=new Date(Date.now()+60000).toTimeString().slice(0,5);$('alarmRepeat').value='none';$('alarmTone').value='digital';$('alarmSnooze').value='5';document.querySelectorAll('.alarmWeekday').forEach(c=>c.checked=false);$('alarmForm').classList.remove('hidden');$('alarmSaveBtn').textContent='Save alarm';$('weekdaysField').style.display='none'}
-function editAlarm(id){const a=alarms.find(x=>x.id===id);if(!a)return;resetForm();$('alarmEditId').value=a.id;$('alarmTitle').value=a.title;$('alarmDescription').value=a.description||'';$('alarmDate').value=a.date;$('alarmTime').value=a.time;$('alarmRepeat').value=a.repeat;$('alarmTone').value=a.tone;$('alarmSnooze').value=String(a.snooze||5);document.querySelectorAll('.alarmWeekday').forEach(c=>c.checked=(a.weekdays||[]).includes(Number(c.value)));$('weekdaysField').style.display=a.repeat==='weekdays'?'block':'none';$('alarmSaveBtn').textContent='Update alarm';$('alarmForm').scrollIntoView({behavior:'smooth'})}
-function saveAlarm(){const title=$('alarmTitle').value.trim(),date=$('alarmDate').value,time=$('alarmTime').value;if(!title||!date||!time){alarmToast('Title, date and time are required.');return}const repeat=$('alarmRepeat').value,weekdays=[...document.querySelectorAll('.alarmWeekday:checked')].map(c=>Number(c.value));if(repeat==='weekdays'&&!weekdays.length){alarmToast('Select at least one weekday.');return}const id=$('alarmEditId').value||('alarm-'+Date.now()+'-'+Math.random().toString(36).slice(2,7));const old=alarms.find(a=>a.id===id);const item={id,title,description:$('alarmDescription').value.trim(),date,time,repeat,weekdays,tone:$('alarmTone').value,snooze:Number($('alarmSnooze').value),enabled:old?old.enabled:true,updatedAt:Date.now(),lastFired:old?.lastFired||0};if(old)Object.assign(old,item);else alarms.push(item);if(!save())return;$('alarmForm').classList.add('hidden');render();alarmToast('Alarm saved locally on this device.');}
-function nextOccurrence(a,after=Date.now()){let d=new Date(a.date+'T'+a.time+':00');if(!Number.isFinite(d.getTime()))return null;if(a.repeat==='none')return d.getTime()>after?d:null;for(let i=0;i<370;i++){const x=new Date(d.getTime()+i*86400000);if(x.getTime()<=after)continue;if(a.repeat==='daily')return x;if(a.repeat==='weekly'&&x.getDay()===d.getDay())return x;if(a.repeat==='weekdays'&&(a.weekdays||[]).includes(x.getDay()))return x}return null}
-function scheduleNext(){const next=alarms.filter(a=>a.enabled).map(a=>({a,d:nextOccurrence(a)})).filter(x=>x.d).sort((x,y)=>x.d-y.d)[0];$('nextAlarmLabel').textContent=next?'Next alarm: '+next.a.title+' · '+next.d.toLocaleString():'Next alarm: none';if(window.__diaryAlarmTick)clearInterval(window.__diaryAlarmTick);window.__diaryAlarmTick=setInterval(()=>{const now=new Date(),stamp=now.getTime(),clock=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0'),date=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');const due=alarms.find(a=>{if(!a.enabled||a.time!==clock||stamp-(a.lastFired||0)<50000)return false;if(a.repeat==='none')return a.date===date;if(a.repeat==='daily')return true;if(a.repeat==='weekly')return new Date(a.date+'T12:00:00').getDay()===now.getDay();if(a.repeat==='weekdays')return (a.weekdays||[]).includes(now.getDay());return false});if(due)ring(due)},1000)}
-function ring(a){if(activeAlarm)return;activeAlarm=a;a.lastFired=Date.now();if(a.repeat==='none')a.enabled=false;save();$('ringingTitle').textContent='⏰ '+a.title;$('ringingDescription').textContent=a.description||alarmDateLabel(a);$('alarmRinging').classList.remove('hidden');playTone(a.tone,true);render()}
-function stopAlarm(){stopSound();activeAlarm=null;$('alarmRinging').classList.add('hidden');render()}
-$('alarmAddBtn').onclick=resetForm;$('alarmCancelBtn').onclick=()=>$('alarmForm').classList.add('hidden');$('alarmSaveBtn').onclick=saveAlarm;$('alarmPreviewBtn').onclick=()=>playTone($('alarmTone').value,false);$('alarmRepeat').onchange=()=>{$('weekdaysField').style.display=$('alarmRepeat').value==='weekdays'?'block':'none'};$('alarmSearch').oninput=render;$('alarmFilter').onchange=render;$('alarmStopBtn').onclick=stopAlarm;$('alarmSnoozeBtn').onclick=()=>{if(!activeAlarm)return;const a=activeAlarm;stopAlarm();const snoozed={...a,id:'snooze-'+Date.now(),date:new Date(Date.now()+(a.snooze||5)*60000).toISOString().slice(0,10),time:new Date(Date.now()+(a.snooze||5)*60000).toTimeString().slice(0,5),repeat:'none',enabled:true,lastFired:0,title:a.title+' (Snoozed)'};alarms.push(snoozed);save();render();alarmToast('Snoozed for '+(a.snooze||5)+' minutes.')};
-function shareText(a){return `Personal Digital Diary Reminder\n\nTitle: ${a.title}\nDescription: ${a.description||'—'}\nDate: ${a.date}\nTime: ${a.time}\nRepeat: ${a.repeat==='none'?'None':a.repeat==='daily'?'Daily':a.repeat==='weekly'?'Weekly':'Selected weekdays: '+(a.weekdays||[]).join(', ')}\n\nShared from Personal Digital Diary.`}
-async function shareAlarm(id){const a=alarms.find(x=>x.id===id);if(!a)return;const text=shareText(a);if(navigator.share){try{await navigator.share({title:'Personal Digital Diary Reminder',text});return}catch(e){if(e.name==='AbortError')return}}copyText(text,'Share not available; reminder text copied. You can paste it into WhatsApp.')}
-function copyText(text,msg){if(navigator.clipboard?.writeText)navigator.clipboard.writeText(text).then(()=>alarmToast(msg||'Reminder text copied.')).catch(()=>fallbackCopy(text,msg));else fallbackCopy(text,msg)}function fallbackCopy(text,msg){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');alarmToast(msg||'Reminder text copied.')}catch{prompt('Copy reminder text:',text)}ta.remove()}
-function copyAlarm(id){const a=alarms.find(x=>x.id===id);if(a)copyText(shareText(a),'Reminder text copied.')}
-$('alarmCustomFile').onchange=()=>{if(customAudioUrl)URL.revokeObjectURL(customAudioUrl);const f=$('alarmCustomFile').files[0];customAudioUrl=f?URL.createObjectURL(f):null;alarmToast(f?'Custom audio selected for preview.':'Custom audio cleared.')};document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')scheduleNext()});render();
-})();
-</script>
-
-
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-import {
-  getAuth, onAuthStateChanged, createUserWithEmailAndPassword,
-  signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup,
-  sendPasswordResetEmail, RecaptchaVerifier, signInWithPhoneNumber,
-  signOut, getRedirectResult
-} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-import {
-  getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp
-} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCv9tWc183pssCDUinQWLwue02skrPB1CE",
-  authDomain: "digital-dairy-922a8.firebaseapp.com",
-  databaseURL: "https://digital-dairy-922a8-default-rtdb.firebaseio.com",
-  projectId: "digital-dairy-922a8",
-  storageBucket: "digital-dairy-922a8.firebasestorage.app",
-  messagingSenderId: "123517202916",
-  appId: "1:123517202916:web:697075fcfa02aeb9be97f1",
-  measurementId: "G-GHRLWCNVPG"
-};
-
-const $ = id => document.getElementById(id);
-const DATA_KEY = 'neonDiary.v1.data';
-const ALARM_KEY = 'neonDiary.v1.smartAlarms';
-const GUEST_KEY = 'neonDiary.v1.guest.data';
-const GUEST_ALARM_KEY = 'neonDiary.v1.guest.alarms';
-const BASE_PREFIX = 'neonDiary.v1.cloudBaseline.';
-const PENDING_PREFIX = 'neonDiary.v1.cloudPending.';
-let auth = null, db = null, currentUser = null, activeUid = null;
-let stopData = null, phoneConfirmation = null, recaptcha = null;
-let cloudReady = false, applyingCloud = false, pendingLocal = false;
-let saveTimer = null, writeChain = Promise.resolve(), lastCloudValue = null;
-let initialLegacyData = localStorage.getItem(DATA_KEY);
-let initialLegacyAlarms = localStorage.getItem(ALARM_KEY);
-let lastError = '';
-
-function message(t) { $('fbMessage').textContent = t; }
-function state(t) { $('fbState').textContent = t; }
-function safeError(e) {
-  const code = e?.code || '';
-  const known = {
-    'auth/invalid-email':'Please enter a valid email address.',
-    'auth/missing-password':'Please enter your password.',
-    'auth/weak-password':'Password must be at least 6 characters.',
-    'auth/email-already-in-use':'An account already exists for this email.',
-    'auth/invalid-credential':'Email/password is incorrect, or this account uses another sign-in method.',
-    'auth/user-not-found':'No account was found for these details.',
-    'auth/wrong-password':'Email/password is incorrect.',
-    'auth/popup-blocked':'The sign-in popup was blocked. Allow popups or try again.',
-    'auth/popup-closed-by-user':'Sign-in was cancelled before it finished.',
-    'auth/unauthorized-domain':'Add this GitHub Pages domain in Firebase Authentication → Settings → Authorized domains.',
-    'auth/operation-not-allowed':'Enable this sign-in provider in Firebase Authentication.',
-    'auth/too-many-requests':'Too many attempts. Wait a while and try again.',
-    'auth/invalid-phone-number':'Use the full phone number with country code, e.g. +91…',
-    'auth/invalid-verification-code':'The SMS code is invalid or expired.',
-    'auth/captcha-check-failed':'reCAPTCHA verification failed. Reset the challenge and try again.',
-    'auth/quota-exceeded':'Firebase SMS quota was reached. Try later or check your Firebase plan.',
-    'permission-denied':'Firestore denied access. Check your Firestore security rules.'
-  };
-  return known[code] || e?.message || 'An unexpected error occurred.';
-}
-function blankData() { return { entries: [], notes: [], tasks: [] }; }
-function normalizeData(v) {
-  if (!v || typeof v !== 'object') return blankData();
-  return {
-    entries: Array.isArray(v.entries) ? v.entries : [],
-    notes: Array.isArray(v.notes) ? v.notes : [],
-    tasks: Array.isArray(v.tasks) ? v.tasks : []
-  };
-}
-function localData() {
-  try { return normalizeData(JSON.parse(localStorage.getItem(DATA_KEY) || '{}')); }
-  catch { return blankData(); }
-}
-function localAlarms() {
-  try { const a = JSON.parse(localStorage.getItem(ALARM_KEY) || '[]'); return Array.isArray(a) ? a : []; }
-  catch { return []; }
-}
-function hasRecords(d, a) {
-  return d.entries.length + d.notes.length + d.tasks.length + a.length > 0;
-}
-function clone(v) { return JSON.parse(JSON.stringify(v)); }
-function accountKey(prefix, uid) { return prefix + encodeURIComponent(uid); }
-function saveAccountCache(uid) {
-  if (!uid) return;
-  try {
-    localStorage.setItem(accountKey('neonDiary.v1.userData.', uid), localStorage.getItem(DATA_KEY) || JSON.stringify(blankData()));
-    localStorage.setItem(accountKey('neonDiary.v1.userAlarms.', uid), localStorage.getItem(ALARM_KEY) || '[]');
-  } catch (e) { message('Account cache could not be saved on this device: ' + safeError(e)); }
-}
-function loadAccountCache(uid) {
-  const d = localStorage.getItem(accountKey('neonDiary.v1.userData.', uid));
-  const a = localStorage.getItem(accountKey('neonDiary.v1.userAlarms.', uid));
-  if (d !== null) localStorage.setItem(DATA_KEY, d); else localStorage.setItem(DATA_KEY, JSON.stringify(blankData()));
-  if (a !== null) localStorage.setItem(ALARM_KEY, a); else localStorage.setItem(ALARM_KEY, '[]');
-}
-function saveBaseline(uid, value) {
-  try { localStorage.setItem(accountKey(BASE_PREFIX, uid), JSON.stringify(value)); } catch {}
-}
-function getBaseline(uid) {
-  try { const x = localStorage.getItem(accountKey(BASE_PREFIX, uid)); return x ? JSON.parse(x) : null; } catch { return null; }
-}
-function setPending(uid, yes) {
-  try {
-    if (yes) localStorage.setItem(accountKey(PENDING_PREFIX, uid), '1');
-    else localStorage.removeItem(accountKey(PENDING_PREFIX, uid));
-  } catch {}
-}
-function isPending(uid) {
-  try { return localStorage.getItem(accountKey(PENDING_PREFIX, uid)) === '1'; } catch { return false; }
-}
-function stopListeners() {
-  if (stopData) { stopData(); stopData = null; }
-  cloudReady = false; lastCloudValue = null;
-  clearTimeout(saveTimer);
-}
-function refreshApp() {
-  try { if (typeof window.renderAll === 'function') window.renderAll(); } catch {}
-  window.dispatchEvent(new Event('diary-cloud-applied'));
-}
-function payloadFromDoc(v) {
-  return { schemaVersion: 2, data: normalizeData(v?.data), alarms: Array.isArray(v?.alarms) ? v.alarms : [] };
-}
-function payloadLocal() {
-  return { schemaVersion: 2, data: localData(), alarms: localAlarms() };
-}
-function payloadHasRecords(p) { return hasRecords(normalizeData(p?.data), Array.isArray(p?.alarms) ? p.alarms : []); }
-
-/* Three-way merge keeps local offline edits/deletions while accepting independent cloud edits.
-   If both sides changed the same record, local wins and is subsequently uploaded. */
-function mergeGroup(baseArr, localArr, remoteArr) {
-  const b = new Map((baseArr || []).filter(x => x && x.id != null).map(x => [String(x.id), x]));
-  const l = new Map((localArr || []).filter(x => x && x.id != null).map(x => [String(x.id), x]));
-  const r = new Map((remoteArr || []).filter(x => x && x.id != null).map(x => [String(x.id), x]));
-  const ids = new Set([...b.keys(), ...l.keys(), ...r.keys()]);
-  const out = [];
-  const same = (x,y) => JSON.stringify(x) === JSON.stringify(y);
-  for (const id of ids) {
-    const bv = b.get(id), lv = l.get(id), rv = r.get(id);
-    const localChanged = !same(lv, bv), remoteChanged = !same(rv, bv);
-    let chosen;
-    if (localChanged && remoteChanged) chosen = lv; // including a local deletion
-    else if (localChanged) chosen = lv;
-    else chosen = rv;
-    if (chosen !== undefined) out.push(chosen);
-  }
-  return out;
-}
-function mergePayload(base, local, remote) {
-  const b = base || {data:blankData(), alarms:[]};
-  return {
-    schemaVersion: 2,
-    data: {
-      entries: mergeGroup(b.data?.entries, local.data.entries, remote.data.entries),
-      notes: mergeGroup(b.data?.notes, local.data.notes, remote.data.notes),
-      tasks: mergeGroup(b.data?.tasks, local.data.tasks, remote.data.tasks)
-    },
-    alarms: mergeGroup(b.alarms, local.alarms, remote.alarms)
-  };
-}
-async function writeCloud(reason='auto') {
-  if (!currentUser || !cloudReady || applyingCloud) return;
-  const user = currentUser, uid = user.uid;
-  const local = payloadLocal();
-  const ref = doc(db, 'users', uid, 'privateData', 'diary');
-  // Serialize writes so quick edits cannot finish out of order.
-  writeChain = writeChain.then(async () => {
-    if (!currentUser || currentUser.uid !== uid) return;
-    const value = payloadLocal();
-    await setDoc(ref, {
-      schemaVersion: 2, data: value.data, alarms: value.alarms,
-      updatedAt: serverTimestamp(), clientUpdatedAt: Date.now()
-    });
-    saveBaseline(uid, value);
-    saveAccountCache(uid);
-    setPending(uid, false);
-    pendingLocal = false;
-    lastCloudValue = value;
-    state('Synced ✓');
-    message('Cloud sync complete for this signed-in account. Your diary is stored under this account only.');
-  }).catch(e => {
-    state('Offline / sync error');
-    message('Cloud save failed: ' + safeError(e) + ' Your local changes remain on this device and will retry when you make another change or tap Sync now.');
-    setPending(uid, true);
-    pendingLocal = true;
-  });
-  await writeChain;
-}
-function queueCloud() {
-  if (!currentUser || !cloudReady || applyingCloud) return;
-  pendingLocal = true; setPending(currentUser.uid, true);
-  saveAccountCache(currentUser.uid);
-  state('Sync pending…');
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => writeCloud('auto'), 850);
-}
-async function applyRemote(user, remote, snapshot) {
-  const uid = user.uid;
-  const local = payloadLocal();
-  const base = getBaseline(uid);
-  const localPending = pendingLocal || isPending(uid);
-  let result = remote;
-  if (localPending && base) {
-    result = mergePayload(base, local, remote);
-  }
-  applyingCloud = true;
-  try {
-    localStorage.setItem(DATA_KEY, JSON.stringify(normalizeData(result.data)));
-    localStorage.setItem(ALARM_KEY, JSON.stringify(Array.isArray(result.alarms) ? result.alarms : []));
-    saveAccountCache(uid);
-    refreshApp();
-  } finally { applyingCloud = false; }
-  if (!snapshot.metadata?.fromCache) {
-    saveBaseline(uid, remote);
-    lastCloudValue = remote;
-    cloudReady = true;
-    state(snapshot.metadata?.hasPendingWrites ? 'Syncing…' : 'Synced ✓');
-    message('Private cloud data loaded for ' + (user.email || user.phoneNumber || 'this account') + '.');
-    if (localPending && base) {
-      const changed = JSON.stringify(result) !== JSON.stringify(remote);
-      if (changed) { pendingLocal = true; setPending(uid, true); queueCloud(); }
-      else { pendingLocal = false; setPending(uid, false); }
-    } else {
-      pendingLocal = false; setPending(uid, false);
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Chronicle - Offline Digital Diary &amp; Journal</title>
+  <meta name="description" content="A private, mobile-first offline digital diary with journal entries, notes, reminders, interactive calendar, PIN security, and standalone HTML export.">
+  <meta property="og:title" content="Chronicle - Offline Digital Diary &amp; Journal">
+  <meta property="og:description" content="A private, mobile-first offline digital diary with journal entries, notes, reminders, interactive calendar, PIN security, and standalone HTML export.">
+  <meta name="theme-color" content="#d97706">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Chronicle">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #d97706;
+      --accent-hover: #b45309;
+      --accent-soft: #fef3c7;
+      --danger: #ef4444;
+      --success: #10b981;
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
-  } else {
-    state('Offline cache');
-    message('Showing this account’s cached data. Changes will sync when the connection returns.');
-    cloudReady = true;
-  }
-}
-async function attachCloud(user) {
-  stopListeners();
-  currentUser = user;
-  activeUid = user.uid;
-  const ref = doc(db, 'users', user.uid, 'privateData', 'diary');
-  const cached = localStorage.getItem(accountKey('neonDiary.v1.userData.', user.uid));
-  const cachedAlarms = localStorage.getItem(accountKey('neonDiary.v1.userAlarms.', user.uid));
-  const accountLocal = {
-    data: cached ? normalizeData(JSON.parse(cached)) : blankData(),
-    alarms: cachedAlarms ? (() => { try { const x=JSON.parse(cachedAlarms); return Array.isArray(x)?x:[]; } catch { return []; } })() : []
-  };
-  pendingLocal = isPending(user.uid);
-  // Only ask to import the old shared device store if this account has never had a cache.
-  let legacy = { data: blankData(), alarms: [] };
-  try { if (initialLegacyData) legacy.data = normalizeData(JSON.parse(initialLegacyData)); } catch {}
-  try { if (initialLegacyAlarms) { const x=JSON.parse(initialLegacyAlarms); if(Array.isArray(x)) legacy.alarms=x; } } catch {}
-  const hasAccountCache = cached !== null || cachedAlarms !== null;
-  if (hasAccountCache) loadAccountCache(user.uid);
-  else {
-    // Keep legacy records as guest data; do not expose them as another account's diary.
-    localStorage.setItem(GUEST_KEY, initialLegacyData || JSON.stringify(blankData()));
-    localStorage.setItem(GUEST_ALARM_KEY, initialLegacyAlarms || '[]');
-    localStorage.setItem(DATA_KEY, JSON.stringify(blankData()));
-    localStorage.setItem(ALARM_KEY, '[]');
-  }
-  try {
-    const snap = await getDoc(ref);
-    if (!currentUser || currentUser.uid !== user.uid) return;
-    if (!snap.exists()) {
-      const accountHas = hasRecords(accountLocal.data, accountLocal.alarms);
-      const legacyHas = !hasAccountCache && hasRecords(legacy.data, legacy.alarms);
-      let source = accountHas ? accountLocal : (legacyHas ? legacy : null);
-      if (source) {
-        const shouldUpload = confirm(
-          'This account has no cloud diary yet. ' +
-          (legacyHas ? 'The diary currently on this device belongs to the old shared local store. ' : 'A local cache exists for this account. ') +
-          'Upload those records to THIS signed-in account now? Choose Cancel to keep them local only.'
-        );
-        if (shouldUpload) {
-          localStorage.setItem(DATA_KEY, JSON.stringify(normalizeData(source.data)));
-          localStorage.setItem(ALARM_KEY, JSON.stringify(source.alarms || []));
-          await setDoc(ref, {schemaVersion:2,data:normalizeData(source.data),alarms:source.alarms||[],updatedAt:serverTimestamp(),clientUpdatedAt:Date.now()});
-          saveAccountCache(user.uid);
-          saveBaseline(user.uid, {schemaVersion:2,data:normalizeData(source.data),alarms:source.alarms||[]});
-          pendingLocal = false; setPending(user.uid, false);
-          refreshApp();
-        } else if (accountHas) {
-          localStorage.setItem(DATA_KEY, JSON.stringify(accountLocal.data));
-          localStorage.setItem(ALARM_KEY, JSON.stringify(accountLocal.alarms));
-          message('Local cache kept. It was not uploaded. Use Sync now only when you want to send these records to this account.');
-        } else {
-          localStorage.setItem(DATA_KEY, JSON.stringify(blankData()));
-          localStorage.setItem(ALARM_KEY, '[]');
-          message('Your cloud diary is empty. Old local records remain saved separately on this device.');
+    [data-theme="dark"] {
+      --bg: #090d16;
+      --card: #131b2e;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #1e293b;
+      --accent: #f59e0b;
+      --accent-hover: #d97706;
+      --accent-soft: rgba(245, 158, 11, 0.15);
+    }
+    [data-theme="sepia"] {
+      --bg: #fbf7ee;
+      --card: #f4ece1;
+      --text: #3c2f25;
+      --text-muted: #7d6e5d;
+      --border: #e6dac8;
+      --accent: #b45309;
+      --accent-hover: #92400e;
+      --accent-soft: #fef3c7;
+    }
+    [data-font="serif"] { --font-stack: Georgia, Cambria, "Times New Roman", serif; }
+    [data-font="mono"] { --font-stack: "SF Mono", Monaco, Menlo, Consolas, monospace; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-stack);
+      line-height: 1.5;
+      padding-bottom: 74px;
+      min-height: 100vh;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(8px);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 16px; }
+
+    /* Button styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn-sm { padding: 4px 10px; font-size: 0.75rem; border-radius: 8px; }
+    .btn-danger { color: var(--danger); border-color: var(--danger); }
+    .btn-icon { padding: 8px; border-radius: 10px; }
+
+    /* Cards */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      transition: all 0.2s ease;
+    }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+    .stat-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 12px; }
+    .stat-val { font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
+    .stat-lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
+
+    /* Tabs & Views */
+    .view-panel { display: none; }
+    .view-panel.active { display: block; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 6px;
+      z-index: 40;
+    }
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+      min-width: 54px;
+    }
+    .nav-btn.active { color: var(--accent); font-weight: 700; }
+    .nav-btn svg { width: 18px; height: 18px; }
+
+    /* Form controls */
+    input, textarea, select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.88rem;
+      margin-bottom: 10px;
+      outline: none;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+
+    /* Meta and text preview */
+    .meta-line {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .meta-sep { opacity: 0.5; }
+    .entry-snippet {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+    .modal-overlay.open { display: flex; animation: fadeIn 0.15s ease; }
+    .modal-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+    .modal-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-body { padding: 18px; overflow-y: auto; flex: 1; }
+    .modal-footer {
+      padding: 12px 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      background: var(--bg);
+    }
+
+    /* Calendar Grid */
+    .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .cal-day-label { text-align: center; font-size: 0.72rem; color: var(--text-muted); font-weight: 600; padding: 4px; }
+    .cal-day {
+      min-height: 48px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      background: var(--card);
+      font-size: 0.78rem;
+    }
+    .cal-day:hover { border-color: var(--border); }
+    .cal-day.today { border-color: var(--accent); font-weight: 700; color: var(--accent); }
+    .cal-day.selected { background: var(--accent); color: #fff; font-weight: 700; }
+    .cal-day.other-month { opacity: 0.3; }
+    .cal-dots { display: flex; gap: 2px; }
+    .cal-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+    .cal-day.selected .cal-dot { background: #fff; }
+
+    /* Notes styles */
+    .note-card { border-radius: 14px; padding: 14px; margin-bottom: 12px; border: 1px solid var(--border); }
+    .note-amber { background: rgba(254, 243, 199, 0.3); border-color: rgba(253, 230, 138, 0.6); }
+    .note-emerald { background: rgba(209, 250, 229, 0.3); border-color: rgba(167, 243, 208, 0.6); }
+    .note-rose { background: rgba(255, 228, 230, 0.3); border-color: rgba(254, 205, 211, 0.6); }
+    .note-indigo { background: rgba(224, 231, 255, 0.3); border-color: rgba(199, 210, 254, 0.6); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 74px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f172a;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      z-index: 100;
+      display: none;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+    }
+
+    /* Keypad PIN Lock */
+    .pin-overlay {
+      position: fixed;
+      inset: 0;
+      background: #090d16;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      padding: 20px;
+    }
+    .pin-dots { display: flex; gap: 12px; margin: 20px 0; }
+    .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #64748b; }
+    .pin-dot.filled { background: var(--accent); border-color: var(--accent); }
+    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 240px; margin-top: 10px; }
+    .key-btn {
+      height: 60px;
+      border-radius: 16px;
+      border: 1px solid #1e293b;
+      background: #131b2e;
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .key-btn:active { transform: scale(0.95); background: #1e293b; }
+
+    @media (max-width: 640px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas-pro@2.0.4"></script><style>.aistudio-hover-highlight { box-shadow: inset 0 0 0 0.5px white, inset 0 0 0 1.5px rgba(128,128,128,0.6) !important; }.aistudio-active-highlight { outline: 2px solid #87a9ff !important; outline-offset: -2px !important; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.3), inset 0 0 0 0.5px rgba(0,0,0,0.3) !important; }.aistudio-generating-blur { filter: blur(5px) grayscale(100%) brightness(28%) !important; transition: filter 0.3s ease; }#aistudio-focus-mode-tag { position: absolute; display: none; align-items: center; gap: 4px; background: #87a9ff; border-radius: 12px; z-index: 10000; padding: 8px; color: #32302c; font-family: Inter, sans-serif; font-size: 14px; font-style: normal; font-weight: 500; line-height: 21px; pointer-events: none; }#aistudio-hover-mode-tag { position: absolute; display: none; align-items: center; gap: 4px; background: rgba(128,128,128,0.6); border-radius: 12px; z-index: 10000; padding: 8px; color: white; font-family: Inter, sans-serif; font-size: 14px; font-style: normal; font-weight: 500; line-height: 21px; pointer-events: none; }.aistudio-img-icon { display: none; vertical-align: middle; pointer-events: auto; cursor: pointer; }.aistudio-img-icon.visible { display: inline-flex; }#aistudio-focus-mode-tag .aistudio-img-icon { position: relative; width: 26px; height: 26px; background: #32302c; border-radius: 6px; margin: -4px -4px -4px 0; }#aistudio-focus-mode-tag .aistudio-img-icon::before { content: ""; position: absolute; top: 4px; left: 4px; width: 18px; height: 18px; background-color: white; -webkit-mask-image: url("https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/edit_fix_auto/default/24px.svg"); -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat; mask-image: url("https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/edit_fix_auto/default/24px.svg"); mask-size: contain; mask-repeat: no-repeat; }#aistudio-hover-mode-tag .aistudio-img-icon { position: relative; width: 18px; height: 18px; margin-left: 4px; }#aistudio-hover-mode-tag .aistudio-img-icon::before { content: ""; position: absolute; top: 0; left: 0; width: 18px; height: 18px; background-color: white; -webkit-mask-image: url("https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/edit_fix_auto/default/24px.svg"); -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat; mask-image: url("https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/edit_fix_auto/default/24px.svg"); mask-size: contain; mask-repeat: no-repeat; }#aistudio-focus-mode-tag .aistudio-img-icon:hover, #aistudio-hover-mode-tag .aistudio-img-icon:hover { background: #424242 !important; }#aistudio-focus-mode-tag .aistudio-img-icon:active, #aistudio-hover-mode-tag .aistudio-img-icon:active { background: #393f51 !important; }</style>
+<style>
+  #account-auth-panel { display:none; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,.62); align-items:center; justify-content:center; padding:16px; }
+  #account-auth-panel .auth-card { width:min(100%,420px); max-height:90vh; overflow:auto; background:var(--card-bg, #fff); color:var(--text-color, #222); border-radius:16px; padding:20px; box-shadow:0 12px 40px rgba(0,0,0,.28); }
+  #account-auth-panel input { box-sizing:border-box; width:100%; padding:12px; margin:6px 0 12px; border:1px solid #aaa; border-radius:8px; font-size:16px; }
+  #account-auth-panel .auth-actions { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0; }
+  #account-auth-panel .auth-actions button { padding:10px 12px; border:0; border-radius:8px; cursor:pointer; }
+  #account-auth-panel .auth-primary { background:#2563eb; color:white; }
+  #account-auth-panel .auth-secondary { background:#e5e7eb; color:#111; }
+  #auth-message { font-size:13px; margin:8px 0; overflow-wrap:anywhere; }
+</style>
+
+</head>
+<body data-theme="light" data-font="sans">
+
+  <!-- PIN LOCK SCREEN -->
+  <div id="pin-lock-screen" class="pin-overlay" style="display: none;">
+    <div style="font-size: 2rem; margin-bottom: 8px;">🔒</div>
+    <h2 style="font-size: 1.25rem; font-weight: 700;">Chronicle Locked</h2>
+    <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 4px;">Enter your 4-digit security PIN</p>
+    <div class="pin-dots">
+      <div class="pin-dot" id="pdot-0"></div>
+      <div class="pin-dot" id="pdot-1"></div>
+      <div class="pin-dot" id="pdot-2"></div>
+      <div class="pin-dot" id="pdot-3"></div>
+    </div>
+    <div id="pin-error-msg" style="color: #ef4444; font-size: 0.75rem; height: 18px; margin-bottom: 6px;"></div>
+    <div class="keypad">
+      <button class="key-btn" onclick="pressPin('1')">1</button>
+      <button class="key-btn" onclick="pressPin('2')">2</button>
+      <button class="key-btn" onclick="pressPin('3')">3</button>
+      <button class="key-btn" onclick="pressPin('4')">4</button>
+      <button class="key-btn" onclick="pressPin('5')">5</button>
+      <button class="key-btn" onclick="pressPin('6')">6</button>
+      <button class="key-btn" onclick="pressPin('7')">7</button>
+      <button class="key-btn" onclick="pressPin('8')">8</button>
+      <button class="key-btn" onclick="pressPin('9')">9</button>
+      <button class="key-btn" style="font-size: 0.8rem;" onclick="recoverPin()">Forgot</button>
+      <button class="key-btn" onclick="pressPin('0')">0</button>
+      <button class="key-btn" style="font-size: 0.85rem;" onclick="pressPinBackspace()">⌫</button>
+    </div>
+  </div>
+
+  <!-- APP HEADER -->
+  <header>
+    <div class="brand" onclick="switchView('dashboard')">
+      <div class="brand-icon">C</div>
+      <span>Chronicle</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-sm" onclick="downloadThisAppFile()" title="Download index.html file">⬇ Download File</button>
+      <button class="btn btn-sm" onclick="openSearchModal()">🔍 Search</button>
+      <button class="btn btn-sm" type="button" onclick="window.chronicleOpenAuth && window.chronicleOpenAuth()">✉️ Email / Phone</button>
+      <button class="btn btn-sm" id="google-login-btn" type="button" onclick="window.chronicleGoogleLogin && window.chronicleGoogleLogin()">🔐 Google Login</button>
+      <span id="google-user-status" style="font-size:0.72rem;color:var(--text-muted);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" aria-live="polite"></span>
+      <button class="btn btn-sm btn-primary" onclick="openEditorModal()">+ Write</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <div class="container">
+
+    <!-- 1. DASHBOARD VIEW -->
+    <div id="view-dashboard" class="view-panel active">
+      <div style="margin-bottom: 16px;">
+        <h1 style="font-size: 1.4rem; font-weight: 700;" id="greeting-text">Welcome to your Diary</h1>
+        <p style="font-size: 0.8rem; color: var(--text-muted);" id="today-date-text">Tuesday, 13 Oct 2026 · Local Storage + Optional Cloud Sync</p>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-val" id="stat-streak">1d</div>
+          <div class="stat-lbl">Streak</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="stat-entries">1</div>
+          <div class="stat-lbl">Entries</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="stat-words">31</div>
+          <div class="stat-lbl">Words</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="stat-reminders">1</div>
+          <div class="stat-lbl">Reminders</div>
+        </div>
+      </div>
+
+      <!-- Mood Check-in Bar -->
+      <div class="card">
+        <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px;">
+          How are you feeling right now?
+        </div>
+        <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;">
+          <button class="btn btn-sm" onclick="quickMood('radiant')">✨ Radiant</button>
+          <button class="btn btn-sm" onclick="quickMood('happy')">😊 Joyful</button>
+          <button class="btn btn-sm" onclick="quickMood('calm')">🌿 Peaceful</button>
+          <button class="btn btn-sm" onclick="quickMood('reflective')">🌙 Thoughtful</button>
+          <button class="btn btn-sm" onclick="quickMood('anxious')">⚡ Restless</button>
+          <button class="btn btn-sm" onclick="quickMood('sad')">🌧️ Heavy</button>
+        </div>
+      </div>
+
+      <!-- Quick Write Prompt -->
+      <div class="card">
+        <textarea id="quick-prompt-input" rows="2" placeholder="Quick reflection, memory, or gratitude..." style="margin-bottom: 8px;"></textarea>
+        <div style="display: flex; justify-content: flex-end;">
+          <button class="btn btn-primary btn-sm" onclick="submitQuickPrompt()">Capture Thought →</button>
+        </div>
+      </div>
+
+      <!-- Recent Entries Feed -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h2 style="font-size: 1.05rem; font-weight: 700;">Recent Journals</h2>
+        <button class="btn btn-sm" onclick="switchView('journal')">View All</button>
+      </div>
+      <div id="dashboard-recent-feed"><div class="card" style="cursor: pointer;"><div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;"><h3 style="font-size: 0.95rem; font-weight: 700;">Welcome to Chronicle</h3><button class="btn btn-sm" onclick="event.stopPropagation(); copyEntryById('ent-1')">Copy</button></div><div class="meta-line"><span>2026-10-13</span><span class="meta-sep">·</span><span>09:00</span><span class="meta-sep">·</span><span>radiant</span></div><p class="entry-snippet">This is your private, offline digital diary. Every word and thought you write is stored directly on your device. You can format text, filter by mood, track streaks, and set reminders.</p></div></div>
+    </div>
+
+    <!-- 2. JOURNAL VIEW -->
+    <div id="view-journal" class="view-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h1 style="font-size: 1.3rem; font-weight: 700;">Daily Journal</h1>
+        <button class="btn btn-primary btn-sm" onclick="openEditorModal()">+ New Entry</button>
+      </div>
+      <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+        <input type="text" id="journal-search" placeholder="Search journals by keyword, mood, or tag..." oninput="renderJournalView()" style="margin: 0;">
+      </div>
+      <div id="journal-feed"></div>
+    </div>
+
+    <!-- 3. NOTES VIEW -->
+    <div id="view-notes" class="view-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h1 style="font-size: 1.3rem; font-weight: 700;">Quick Notes &amp; Scratchpad</h1>
+        <button class="btn btn-primary btn-sm" onclick="openNoteModal()">+ New Note</button>
+      </div>
+      <div id="notes-feed"></div>
+    </div>
+
+    <!-- 4. CALENDAR VIEW -->
+    <div id="view-calendar" class="view-panel">
+      <div class="cal-header">
+        <h1 style="font-size: 1.2rem; font-weight: 700;" id="cal-month-title">Calendar</h1>
+        <div style="display: flex; gap: 6px;">
+          <button class="btn btn-sm" onclick="calPrevMonth()">&lt; Prev</button>
+          <button class="btn btn-sm" onclick="calJumpToday()">Today</button>
+          <button class="btn btn-sm" onclick="calNextMonth()">Next &gt;</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="cal-grid" style="margin-bottom: 6px;">
+          <div class="cal-day-label">Sun</div>
+          <div class="cal-day-label">Mon</div>
+          <div class="cal-day-label">Tue</div>
+          <div class="cal-day-label">Wed</div>
+          <div class="cal-day-label">Thu</div>
+          <div class="cal-day-label">Fri</div>
+          <div class="cal-day-label">Sat</div>
+        </div>
+        <div class="cal-grid" id="calendar-days-matrix"></div>
+      </div>
+
+      <!-- Selected Day Details -->
+      <div class="card" id="cal-selected-day-details">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="font-size: 0.95rem; font-weight: 700;" id="cal-selected-date-text">Selected Date</h3>
+          <button class="btn btn-primary btn-sm" onclick="openEditorModalForDate()">+ Write Entry</button>
+        </div>
+        <div id="cal-selected-entries-list"></div>
+      </div>
+    </div>
+
+    <!-- 5. REMINDERS VIEW -->
+    <div id="view-reminders" class="view-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h1 style="font-size: 1.3rem; font-weight: 700;">Reminders</h1>
+        <button class="btn btn-primary btn-sm" onclick="openReminderModal()">+ New Reminder</button>
+      </div>
+
+      <!-- Daily Ritual Card -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="font-size: 0.95rem; font-weight: 700;">Daily Journaling Ritual</h3>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">Evening nudge to write your memories</p>
+          </div>
+          <input type="time" id="daily-ritual-time" value="20:30" onchange="saveDailyRitualTime()" style="width: 100px; margin: 0;">
+        </div>
+      </div>
+
+      <div id="reminders-feed"></div>
+    </div>
+
+    <!-- 6. SETTINGS VIEW -->
+    <div id="view-settings" class="view-panel">
+      <h1 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 14px;">Settings &amp; Backup</h1>
+
+      <!-- Download & Copy Standalone Code -->
+      <div class="card" style="border: 2px solid var(--accent); background: var(--accent-soft);">
+        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 6px;">Download or Copy Standalone App</h3>
+        <p style="font-size: 0.8rem; color: var(--text); margin-bottom: 12px;">
+          Export this entire Digital Diary as a single, self-contained <code>index.html</code> file ready to open in any browser or publish on GitHub Pages for free.
+        </p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="btn btn-primary btn-sm" onclick="downloadThisAppFile()">⬇ Download index.html</button>
+          <button class="btn btn-sm" onclick="copyFullAppHtml()">📋 Copy Full Code</button>
+        </div>
+      </div>
+
+      <!-- Appearance -->
+      <div class="card">
+        <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 10px;">Theme &amp; Appearance</h3>
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+          <button class="btn btn-sm" onclick="setAppTheme('light')">☀️ Light Paper</button>
+          <button class="btn btn-sm" onclick="setAppTheme('dark')">🌙 Dark OLED</button>
+          <button class="btn btn-sm" onclick="setAppTheme('sepia')">📜 Vintage Sepia</button>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Typography:</div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-sm" onclick="setAppFont('sans')">Modern Sans</button>
+          <button class="btn btn-sm" onclick="setAppFont('serif')">Literary Serif</button>
+          <button class="btn btn-sm" onclick="setAppFont('mono')">Typewriter Mono</button>
+        </div>
+      </div>
+
+      <!-- Security -->
+      <div class="card">
+        <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 6px;">PIN Lock Security</h3>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">
+          Protect your diary entries with a 4-digit passcode on this device.
+        </p>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button class="btn btn-primary btn-sm" onclick="openSetPinModal()">Configure PIN</button>
+          <button class="btn btn-sm" id="btn-lock-now" style="display: none;" onclick="lockAppNow()">Lock Now</button>
+          <button class="btn btn-sm btn-danger" id="btn-remove-pin" style="display: none;" onclick="disablePin()">Remove PIN</button>
+        </div>
+      </div>
+
+      <!-- Backup & JSON -->
+      <div class="card">
+        <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 6px;">Data Backup &amp; Offline Storage</h3>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">
+          100% stored in your browser LocalStorage. Download your data as JSON anytime.
+        </p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="btn btn-sm" onclick="exportDataJson()">Export JSON Backup</button>
+          <label class="btn btn-sm" style="margin: 0; cursor: pointer;">
+            Import JSON Backup
+            <input type="file" accept=".json" onchange="importDataJson(event)" style="display: none;">
+          </label>
+          <button class="btn btn-sm btn-danger" onclick="clearAllData()">Clear All Data</button>
+        </div>
+      </div>
+
+      <!-- GitHub Pages Notice -->
+      <div class="card" style="border-left: 3px solid var(--accent);">
+        <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 6px;">Hosting on GitHub Pages (Free)</h3>
+        <p style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.5;">
+          To publish for free: create a repository on GitHub (e.g. <code>my-diary</code>), upload this file as <code>index.html</code>, go to Settings → Pages, and choose deploy from <code>main</code> / <code>root</code>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAVIGATION -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="nb-dashboard" onclick="switchView('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+      <span>Diary</span>
+    </button>
+    <button class="nav-btn" id="nb-journal" onclick="switchView('journal')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+      <span>Entries</span>
+    </button>
+    <button class="nav-btn" id="nb-notes" onclick="switchView('notes')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+      <span>Notes</span>
+    </button>
+    <button class="nav-btn" id="nb-calendar" onclick="switchView('calendar')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+      <span>Calendar</span>
+    </button>
+    <button class="nav-btn" id="nb-reminders" onclick="switchView('reminders')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+      <span>Remind</span>
+    </button>
+    <button class="nav-btn" id="nb-settings" onclick="switchView('settings')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <!-- JOURNAL EDITOR MODAL -->
+  <div id="modal-editor" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size: 1rem; font-weight: 700;" id="editor-modal-title">Write Journal Entry</h3>
+        <button class="btn btn-sm" onclick="closeEditorModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="ed-title" placeholder="Entry Title (optional)">
+        <div style="display: flex; gap: 8px;">
+          <input type="date" id="ed-date">
+          <input type="time" id="ed-time" style="width: 130px;">
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <select id="ed-mood">
+            <option value="radiant">✨ Radiant</option>
+            <option value="happy">😊 Joyful</option>
+            <option value="calm">🌿 Peaceful</option>
+            <option value="reflective">🌙 Thoughtful</option>
+            <option value="anxious">⚡ Restless</option>
+            <option value="sad">🌧️ Heavy</option>
+          </select>
+          <select id="ed-weather">
+            <option value="sunny">☀️ Sunny</option>
+            <option value="cloudy">☁️ Cloudy</option>
+            <option value="rainy">🌧️ Rainy</option>
+            <option value="snowy">❄️ Snowy</option>
+            <option value="stormy">⛈️ Stormy</option>
+          </select>
+        </div>
+        <input type="text" id="ed-tags" placeholder="Tags (comma separated, e.g. life, walk, reading)">
+        
+        <!-- Text formatting helpers -->
+        <div style="display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap;">
+          <button class="btn btn-sm" type="button" onclick="insertFmt('**', '**')"><b>B</b></button>
+          <button class="btn btn-sm" type="button" onclick="insertFmt('*', '*')"><i>I</i></button>
+          <button class="btn btn-sm" type="button" onclick="insertFmt('## ')">H2</button>
+          <button class="btn btn-sm" type="button" onclick="insertFmt('- ')">• List</button>
+          <button class="btn btn-sm" type="button" onclick="insertFmt('&gt; ')">Quote</button>
+        </div>
+
+        <textarea id="ed-content" rows="10" placeholder="Write your thoughts, memories, reflections here..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeEditorModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveEditorEntry()">Save Entry</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENTRY READER MODAL -->
+  <div id="modal-reader" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size: 1rem; font-weight: 700;" id="reader-title">Entry</h3>
+        <button class="btn btn-sm" onclick="closeReaderModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="meta-line" id="reader-meta"></div>
+        <div id="reader-body" style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6; margin-top: 12px;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm" onclick="copyReaderText()">📋 Copy Text</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteCurrentReadingEntry()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTE MODAL -->
+  <div id="modal-note" class="modal-overlay">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 style="font-size: 1rem; font-weight: 700;">Create Note</h3>
+        <button class="btn btn-sm" onclick="closeNoteModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="note-in-title" placeholder="Note Title">
+        <select id="note-in-color">
+          <option value="amber">Warm Amber</option>
+          <option value="emerald">Fresh Emerald</option>
+          <option value="rose">Soft Rose</option>
+          <option value="indigo">Cool Indigo</option>
+        </select>
+        <textarea id="note-in-content" rows="6" placeholder="Quick idea, to-do list, reminder..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeNoteModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveNoteEntry()">Save Note</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REMINDER MODAL -->
+  <div id="modal-reminder" class="modal-overlay">
+    <div class="modal-card" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 style="font-size: 1rem; font-weight: 700;">New Reminder</h3>
+        <button class="btn btn-sm" onclick="closeReminderModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="rem-in-title" placeholder="Reminder Title">
+        <div style="display: flex; gap: 8px;">
+          <input type="date" id="rem-in-date">
+          <input type="time" id="rem-in-time" value="20:00">
+        </div>
+        <select id="rem-in-repeat">
+          <option value="none">No repeat</option>
+          <option value="daily">Every day</option>
+          <option value="weekly">Every week</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeReminderModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveReminderEntry()">Save Reminder</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIN SETUP MODAL -->
+  <div id="modal-set-pin" class="modal-overlay">
+    <div class="modal-card" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3 style="font-size: 1rem; font-weight: 700;">Set 4-Digit PIN</h3>
+        <button class="btn btn-sm" onclick="closeSetPinModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="password" id="pin-setup-input" maxlength="4" placeholder="Enter 4 digits (e.g. 1234)">
+        <input type="password" id="pin-setup-confirm" maxlength="4" placeholder="Confirm 4 digits">
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Security Question (Recovery):</div>
+        <input type="text" id="pin-setup-question" value="What is your favorite book or city?">
+        <input type="text" id="pin-setup-answer" placeholder="Your recovery answer">
+        <div id="pin-setup-err" style="color: var(--danger); font-size: 0.75rem;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeSetPinModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitPinSetup()">Save PIN</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH MODAL -->
+  <div id="modal-search" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <input type="text" id="search-modal-input" placeholder="Search entries and notes..." oninput="runGlobalSearch()" style="margin: 0;">
+        <button class="btn btn-sm" onclick="closeSearchModal()" style="margin-left: 8px;">✕</button>
+      </div>
+      <div class="modal-body" id="search-modal-results">
+        <div style="text-align: center; color: var(--text-muted); padding: 20px;">Type keywords above to search offline.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GLOBAL TOAST -->
+  <div id="app-toast" class="toast"></div>
+
+  <!-- APPLICATION JAVASCRIPT -->
+  <script>
+    var INITIAL_JOURNALS = [
+      {
+        id: "ent-1",
+        title: "Welcome to Chronicle",
+        content: "This is your private, offline digital diary. Every word and thought you write is stored directly on your device. You can format text, filter by mood, track streaks, and set reminders.",
+        date: new Date().toISOString().split('T')[0],
+        time: "09:00",
+        mood: "radiant",
+        weather: "sunny",
+        tags: ["welcome", "journal"]
+      }
+    ];
+    var INITIAL_NOTES = [
+      {
+        id: "nt-1",
+        title: "Quick Ideas",
+        content: "1. Morning gratitude\n2. Evening reflection\n3. Creative brainstorms",
+        color: "amber"
+      }
+    ];
+    var INITIAL_REMINDERS = [
+      {
+        id: "rem-1",
+        title: "Evening reflection check-in",
+        date: new Date().toISOString().split('T')[0],
+        time: "20:30",
+        repeat: "daily",
+        isCompleted: false
+      }
+    ];
+    var INITIAL_SETTINGS = {
+      theme: "light",
+      fontFamily: "sans",
+      pinEnabled: false,
+      pinHash: "",
+      securityQuestion: "What is your favorite book or city?",
+      securityAnswer: "",
+      dailyReminderTime: "20:30"
+    };
+
+    function getStorage(key, fallback) {
+      try {
+        var item = localStorage.getItem('chr_' + key);
+        return item ? JSON.parse(item) : fallback;
+      } catch (err) { return fallback; }
+    }
+    function setStorage(key, value) {
+      try { localStorage.setItem('chr_' + key, JSON.stringify(value)); } catch (err) {}
+      // Notify the Firebase module when diary data changes. Local saving still works offline.
+      try { window.dispatchEvent(new CustomEvent('chronicle-local-data-changed', { detail: { key: key } })); } catch (err) {}
+    }
+
+    var journals = getStorage('journals', INITIAL_JOURNALS);
+    var notes = getStorage('notes', INITIAL_NOTES);
+    var reminders = getStorage('reminders', INITIAL_REMINDERS);
+    var settings = getStorage('settings', INITIAL_SETTINGS);
+
+    var activeReadingEntryId = null;
+    var editingJournalId = null;
+    var calDate = new Date();
+    var selectedCalIso = new Date().toISOString().split('T')[0];
+    var enteredPin = '';
+
+    function showToast(text) {
+      var el = document.getElementById('app-toast');
+      el.textContent = text;
+      el.style.display = 'block';
+      setTimeout(function() { el.style.display = 'none'; }, 2000);
+    }
+
+    function copyToClipboard(text, label) {
+      if (!label) label = 'Copied to clipboard!';
+      navigator.clipboard.writeText(text).then(function() {
+        showToast(label);
+      }).catch(function() {
+        var t = document.createElement('textarea');
+        t.value = text;
+        document.body.appendChild(t);
+        t.select();
+        document.execCommand('copy');
+        document.body.removeChild(t);
+        showToast(label);
+      });
+    }
+
+    function copyEntryById(id) {
+      var e = journals.find(function(x) { return x.id === id; });
+      if (e) copyToClipboard(e.content, 'Copied entry to clipboard!');
+    }
+    function copyNoteById(id) {
+      var n = notes.find(function(x) { return x.id === id; });
+      if (n) copyToClipboard(n.content, 'Copied note to clipboard!');
+    }
+
+    function switchView(tab) {
+      document.querySelectorAll('.view-panel').forEach(function(p) { p.classList.remove('active'); });
+      document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
+      var panel = document.getElementById('view-' + tab);
+      if (panel) panel.classList.add('active');
+      var btn = document.getElementById('nb-' + tab);
+      if (btn) btn.classList.add('active');
+
+      if (tab === 'dashboard') renderDashboard();
+      if (tab === 'journal') renderJournalView();
+      if (tab === 'notes') renderNotesView();
+      if (tab === 'calendar') renderCalendarView();
+      if (tab === 'reminders') renderRemindersView();
+      if (tab === 'settings') renderSettingsView();
+    }
+
+    function setAppTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      settings.theme = theme;
+      setStorage('settings', settings);
+    }
+
+    function setAppFont(font) {
+      document.body.setAttribute('data-font', font);
+      settings.fontFamily = font;
+      setStorage('settings', settings);
+    }
+
+    // --- PIN LOGIC ---
+    function checkPinOnStartup() {
+      if (settings.pinEnabled && settings.pinHash) {
+        document.getElementById('pin-lock-screen').style.display = 'flex';
+      }
+    }
+    function pressPin(digit) {
+      if (enteredPin.length < 4) {
+        enteredPin += digit;
+        updatePinDots();
+        if (enteredPin.length === 4) {
+          verifyPin();
         }
       }
-    } else {
-      const remote = payloadFromDoc(snap.data());
-      // Existing cloud data wins on first login unless this account has known pending offline edits.
-      if (!pendingLocal || !getBaseline(user.uid)) {
-        localStorage.setItem(DATA_KEY, JSON.stringify(remote.data));
-        localStorage.setItem(ALARM_KEY, JSON.stringify(remote.alarms));
-        saveAccountCache(user.uid);
-        saveBaseline(user.uid, remote);
-        pendingLocal = false; setPending(user.uid, false);
-        refreshApp();
+    }
+    function pressPinBackspace() {
+      enteredPin = enteredPin.slice(0, -1);
+      updatePinDots();
+    }
+    function updatePinDots() {
+      for (var i = 0; i < 4; i++) {
+        var dot = document.getElementById('pdot-' + i);
+        if (i < enteredPin.length) dot.classList.add('filled');
+        else dot.classList.remove('filled');
       }
     }
-    if (!currentUser || currentUser.uid !== user.uid) return;
-    stopData = onSnapshot(ref, snap2 => {
-      if (!currentUser || currentUser.uid !== user.uid) return;
-      if (!snap2.exists()) {
-        cloudReady = true;
-        state('Cloud ready');
+    function verifyPin() {
+      if (enteredPin === settings.pinHash) {
+        document.getElementById('pin-lock-screen').style.display = 'none';
+        enteredPin = '';
+        updatePinDots();
+      } else {
+        document.getElementById('pin-error-msg').textContent = 'Incorrect PIN';
+        setTimeout(function() {
+          enteredPin = '';
+          updatePinDots();
+          document.getElementById('pin-error-msg').textContent = '';
+        }, 500);
+      }
+    }
+    function recoverPin() {
+      var ans = prompt(settings.securityQuestion || 'Security Answer:');
+      if (ans && ans.trim().toLowerCase() === (settings.securityAnswer || '').toLowerCase()) {
+        settings.pinEnabled = false;
+        settings.pinHash = '';
+        setStorage('settings', settings);
+        document.getElementById('pin-lock-screen').style.display = 'none';
+        showToast('PIN removed via recovery question');
+        renderSettingsView();
+      } else if (ans !== null) {
+        alert('Incorrect answer.');
+      }
+    }
+    function lockAppNow() {
+      enteredPin = '';
+      updatePinDots();
+      document.getElementById('pin-lock-screen').style.display = 'flex';
+    }
+
+    // --- DASHBOARD ---
+    function renderDashboard() {
+      var todayIso = new Date().toISOString().split('T')[0];
+      var todayFormatted = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+      document.getElementById('today-date-text').textContent = todayFormatted + ' · Local Storage + Optional Cloud Sync';
+
+      var totalWords = journals.reduce(function(a, b) {
+        return a + (b.content ? b.content.split(/\s+/).filter(Boolean).length : 0);
+      }, 0);
+      document.getElementById('stat-entries').textContent = journals.length;
+      document.getElementById('stat-words').textContent = totalWords.toLocaleString();
+      document.getElementById('stat-streak').textContent = Math.min(journals.length, 3) + 'd';
+      document.getElementById('stat-reminders').textContent = reminders.filter(function(r) { return !r.isCompleted; }).length;
+
+      var recentContainer = document.getElementById('dashboard-recent-feed');
+      recentContainer.innerHTML = '';
+      var recents = journals.slice(0, 3);
+
+      if (recents.length === 0) {
+        recentContainer.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">No entries yet. Write your first thought today!</div>';
         return;
       }
-      const remote = payloadFromDoc(snap2.data());
-      // Ignore our own pending server writes until Firestore acknowledges them.
-      if (snap2.metadata?.hasPendingWrites) {
-        state('Syncing…'); cloudReady = true; return;
-      }
-      applyRemote(user, remote, snap2).catch(e => {
-        state('Cloud error'); message('Could not apply cloud data: ' + safeError(e));
+
+      recents.forEach(function(entry) {
+        var card = document.createElement('div');
+        card.className = 'card';
+        card.style.cursor = 'pointer';
+        card.onclick = function() { openReaderModal(entry.id); };
+        card.innerHTML = [
+          '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">',
+            '<h3 style="font-size: 0.95rem; font-weight: 700;">' + (entry.title || 'Untitled Entry') + '</h3>',
+            '<div style="display:flex; gap:4px; flex-wrap:wrap;" onclick="event.stopPropagation()">',
+              '<button class="btn btn-sm" onclick="copyEntryById(\'' + entry.id + '\')">Copy</button>',
+              '<button class="btn btn-sm" onclick="editEntry(\'' + entry.id + '\')">Edit</button>',
+              '<button class="btn btn-sm btn-danger" onclick="deleteEntryById(\'' + entry.id + '\')">Delete</button>',
+            '</div>',
+          '</div>',
+          '<div class="meta-line">',
+            '<span>' + entry.date + '</span>',
+            '<span class="meta-sep">·</span>',
+            '<span>' + (entry.time || '') + '</span>',
+            '<span class="meta-sep">·</span>',
+            '<span>' + (entry.mood || 'peaceful') + '</span>',
+          '</div>',
+          '<p class="entry-snippet">' + entry.content + '</p>'
+        ].join('');
+        recentContainer.appendChild(card);
       });
-    }, e => {
-      cloudReady = false; state('Cloud error');
-      message('Cloud read failed: ' + safeError(e) + '. Local data remains on this device.');
-    });
-    cloudReady = true;
-    state(navigator.onLine ? 'Cloud ready' : 'Offline cache');
-    if (snap.exists()) message('Connected to this account’s private cloud diary.');
-  } catch (e) {
-    cloudReady = false; state('Sync error');
-    message('Could not open this account’s cloud diary: ' + safeError(e) + '. Local data remains on this device.');
-  }
-}
-function showUser(user) {
-  $('fbSignedOut').classList.toggle('hidden', !!user);
-  $('fbSignedIn').classList.toggle('hidden', !user);
-  if (user) {
-    $('fbUserLabel').textContent = 'Signed in as ' + (user.email || user.phoneNumber || user.uid);
-    state('Connecting…');
-  } else {
-    state('Not signed in'); $('fbUserLabel').textContent = '';
-  }
-}
-function validateEmailPassword() {
-  const email = $('fbEmail').value.trim(), password = $('fbPassword').value;
-  if (!email) throw new Error('Enter your email address.');
-  if (!password) throw new Error('Enter your password.');
-  return { email, password };
-}
-const configured = !Object.values(firebaseConfig).some(v => String(v).includes('PASTE_'));
-if (!configured) {
-  state('Config needed');
-  message('Firebase sign-in is not active yet: replace PASTE_YOUR_FIREBASE_API_KEY_HERE with the Web API key from Firebase Console → Project settings → General → Your apps. Other diary features remain local and available.');
-} else {
-  try {
-    const app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getFirestore(app);
-    onAuthStateChanged(auth, async user => {
-      if (activeUid && activeUid !== user?.uid) saveAccountCache(activeUid);
-      stopListeners();
-      if (!user) {
-        currentUser = null; activeUid = null; cloudReady = false; pendingLocal = false;
-        // Restore guest data, not the last signed-in account's records.
-        const gd = localStorage.getItem(GUEST_KEY);
-        const ga = localStorage.getItem(GUEST_ALARM_KEY);
-        if (gd !== null) localStorage.setItem(DATA_KEY, gd);
-        else if (initialLegacyData !== null) localStorage.setItem(DATA_KEY, initialLegacyData);
-        else localStorage.setItem(DATA_KEY, JSON.stringify(blankData()));
-        if (ga !== null) localStorage.setItem(ALARM_KEY, ga);
-        else if (initialLegacyAlarms !== null) localStorage.setItem(ALARM_KEY, initialLegacyAlarms);
-        else localStorage.setItem(ALARM_KEY, '[]');
-        showUser(null); refreshApp();
+    }
+
+    function quickMood(mood) {
+      openEditorModal();
+      document.getElementById('ed-mood').value = mood;
+    }
+
+    function submitQuickPrompt() {
+      var val = document.getElementById('quick-prompt-input').value.trim();
+      if (!val) return;
+      openEditorModal();
+      document.getElementById('ed-content').value = val;
+      document.getElementById('quick-prompt-input').value = '';
+    }
+
+    // --- JOURNAL ENTRIES ---
+    function renderJournalView() {
+      var query = (document.getElementById('journal-search').value || '').toLowerCase();
+      var feed = document.getElementById('journal-feed');
+      feed.innerHTML = '';
+
+      var filtered = journals.filter(function(j) {
+        if (!query) return true;
+        return (j.title || '').toLowerCase().includes(query) ||
+               (j.content || '').toLowerCase().includes(query) ||
+               (j.mood || '').toLowerCase().includes(query);
+      });
+
+      if (filtered.length === 0) {
+        feed.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No entries match your search.</div>';
         return;
       }
-      showUser(user);
-      await attachCloud(user);
+
+      filtered.forEach(function(entry) {
+        var card = document.createElement('div');
+        card.className = 'card';
+        card.style.cursor = 'pointer';
+        card.onclick = function() { openReaderModal(entry.id); };
+        card.innerHTML = [
+          '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">',
+            '<h3 style="font-size: 1rem; font-weight: 700;">' + (entry.title || 'Untitled Entry') + '</h3>',
+            '<div style="display: flex; gap: 4px;" onclick="event.stopPropagation()">',
+              '<button class="btn btn-sm" onclick="copyEntryById(\'' + entry.id + '\')">Copy</button>',
+              '<button class="btn btn-sm" onclick="editEntry(\'' + entry.id + '\')">Edit</button>',
+            '</div>',
+          '</div>',
+          '<div class="meta-line">',
+            '<span>' + entry.date + '</span>',
+            '<span class="meta-sep">·</span>',
+            '<span>' + (entry.time || '') + '</span>',
+            '<span class="meta-sep">·</span>',
+            '<span>' + (entry.mood || 'peaceful') + '</span>',
+            (entry.weather ? '<span class="meta-sep">·</span><span>' + entry.weather + '</span>' : ''),
+          '</div>',
+          '<p class="entry-snippet">' + entry.content + '</p>'
+        ].join('');
+        feed.appendChild(card);
+      });
+    }
+
+    function openEditorModal(entry) {
+      editingJournalId = entry ? entry.id : null;
+      document.getElementById('editor-modal-title').textContent = entry ? 'Edit Journal Entry' : 'Write Journal Entry';
+      document.getElementById('ed-title').value = entry ? entry.title : '';
+      document.getElementById('ed-date').value = entry ? entry.date : new Date().toISOString().split('T')[0];
+      document.getElementById('ed-time').value = entry ? entry.time : new Date().toTimeString().slice(0, 5);
+      document.getElementById('ed-mood').value = entry ? entry.mood : 'calm';
+      document.getElementById('ed-weather').value = entry ? (entry.weather || 'sunny') : 'sunny';
+      document.getElementById('ed-tags').value = entry && entry.tags ? entry.tags.join(', ') : '';
+      document.getElementById('ed-content').value = entry ? entry.content : '';
+      document.getElementById('modal-editor').classList.add('open');
+    }
+
+    function closeEditorModal() {
+      document.getElementById('modal-editor').classList.remove('open');
+    }
+
+    function insertFmt(prefix, suffix) {
+      if (!suffix) suffix = '';
+      var ta = document.getElementById('ed-content');
+      var start = ta.selectionStart;
+      var end = ta.selectionEnd;
+      var text = ta.value;
+      var sel = text.substring(start, end);
+      ta.value = text.substring(0, start) + prefix + sel + suffix + text.substring(end);
+      ta.focus();
+    }
+
+    function saveEditorEntry() {
+      var content = document.getElementById('ed-content').value.trim();
+      if (!content) { alert('Please write something in your entry.'); return; }
+
+      var title = document.getElementById('ed-title').value.trim();
+      var date = document.getElementById('ed-date').value || new Date().toISOString().split('T')[0];
+      var time = document.getElementById('ed-time').value || new Date().toTimeString().slice(0, 5);
+      var mood = document.getElementById('ed-mood').value;
+      var weather = document.getElementById('ed-weather').value;
+      var tags = document.getElementById('ed-tags').value.split(',').map(function(t) { return t.trim(); }).filter(Boolean);
+
+      if (editingJournalId) {
+        var idx = journals.findIndex(function(j) { return j.id === editingJournalId; });
+        if (idx >= 0) {
+          journals[idx] = Object.assign({}, journals[idx], { title: title, content: content, date: date, time: time, mood: mood, weather: weather, tags: tags });
+        }
+      } else {
+        journals.unshift({
+          id: 'ent-' + Date.now(),
+          title: title, content: content, date: date, time: time, mood: mood, weather: weather, tags: tags,
+          timestamp: Date.now()
+        });
+      }
+
+      setStorage('journals', journals);
+      closeEditorModal();
+      showToast('Entry saved!');
+      renderDashboard();
+      renderJournalView();
+    }
+
+    function editEntry(id) {
+      var ent = journals.find(function(j) { return j.id === id; });
+      if (ent) openEditorModal(ent);
+    }
+
+    function deleteEntryById(id) {
+      var ent = journals.find(function(j) { return j.id === id; });
+      if (!ent) return;
+      if (!confirm('क्या आप इस डायरी एंट्री को डिलीट करना चाहते हैं?')) return;
+      journals = journals.filter(function(j) { return j.id !== id; });
+      setStorage('journals', journals);
+      showToast('Entry deleted');
+      renderDashboard();
+      renderJournalView();
+    }
+
+    function openReaderModal(id) {
+      var ent = journals.find(function(j) { return j.id === id; });
+      if (!ent) return;
+      activeReadingEntryId = id;
+      document.getElementById('reader-title').textContent = ent.title || 'Journal Entry';
+      document.getElementById('reader-meta').innerHTML = [
+        '<span>' + ent.date + '</span>',
+        '<span class="meta-sep">·</span>',
+        '<span>' + (ent.time || '') + '</span>',
+        '<span class="meta-sep">·</span>',
+        '<span>' + (ent.mood || 'peaceful') + '</span>'
+      ].join('');
+      document.getElementById('reader-body').textContent = ent.content;
+      document.getElementById('modal-reader').classList.add('open');
+    }
+
+    function closeReaderModal() {
+      document.getElementById('modal-reader').classList.remove('open');
+      activeReadingEntryId = null;
+    }
+
+    function copyReaderText() {
+      var ent = journals.find(function(j) { return j.id === activeReadingEntryId; });
+      if (ent) copyToClipboard(ent.content, 'Copied entry to clipboard!');
+    }
+
+    function deleteCurrentReadingEntry() {
+      if (!confirm('Are you sure you want to delete this entry?')) return;
+      journals = journals.filter(function(j) { return j.id !== activeReadingEntryId; });
+      setStorage('journals', journals);
+      closeReaderModal();
+      showToast('Entry deleted');
+      renderDashboard();
+      renderJournalView();
+    }
+
+    // --- NOTES ---
+    function renderNotesView() {
+      var feed = document.getElementById('notes-feed');
+      feed.innerHTML = '';
+      if (notes.length === 0) {
+        feed.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No notes yet. Tap "+ New Note" to write one!</div>';
+        return;
+      }
+
+      notes.forEach(function(note) {
+        var card = document.createElement('div');
+        card.className = 'note-card note-' + (note.color || 'amber');
+        card.innerHTML = [
+          '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">',
+            '<h3 style="font-size: 0.95rem; font-weight: 700;">' + (note.title || 'Note') + '</h3>',
+            '<div style="display: flex; gap: 4px;">',
+              '<button class="btn btn-sm" onclick="copyNoteById(\'' + note.id + '\')">Copy</button>',
+              '<button class="btn btn-sm btn-danger" onclick="deleteNote(\'' + note.id + '\')">✕</button>',
+            '</div>',
+          '</div>',
+          '<p style="font-size: 0.88rem; white-space: pre-wrap; line-height: 1.5;">' + (note.content || '') + '</p>'
+        ].join('');
+        feed.appendChild(card);
+      });
+    }
+
+    function openNoteModal() {
+      document.getElementById('note-in-title').value = '';
+      document.getElementById('note-in-content').value = '';
+      document.getElementById('modal-note').classList.add('open');
+    }
+    function closeNoteModal() {
+      document.getElementById('modal-note').classList.remove('open');
+    }
+    function saveNoteEntry() {
+      var content = document.getElementById('note-in-content').value.trim();
+      var title = document.getElementById('note-in-title').value.trim();
+      var color = document.getElementById('note-in-color').value;
+      if (!content && !title) return;
+
+      notes.unshift({ id: 'nt-' + Date.now(), title: title, content: content, color: color, updatedAt: Date.now() });
+      setStorage('notes', notes);
+      closeNoteModal();
+      showToast('Note created!');
+      renderNotesView();
+    }
+    function deleteNote(id) {
+      notes = notes.filter(function(n) { return n.id !== id; });
+      setStorage('notes', notes);
+      renderNotesView();
+    }
+
+    // --- CALENDAR ---
+    function renderCalendarView() {
+      var year = calDate.getFullYear();
+      var month = calDate.getMonth();
+      var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      document.getElementById('cal-month-title').textContent = monthNames[month] + ' ' + year;
+
+      var firstDay = new Date(year, month, 1).getDay();
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
+      var daysInPrev = new Date(year, month, 0).getDate();
+
+      var matrix = document.getElementById('calendar-days-matrix');
+      matrix.innerHTML = '';
+
+      // Prev month filler
+      for (var i = firstDay - 1; i >= 0; i--) {
+        var d = daysInPrev - i;
+        var cell = document.createElement('div');
+        cell.className = 'cal-day other-month';
+        cell.textContent = d;
+        matrix.appendChild(cell);
+      }
+
+      // Current month
+      var todayIso = new Date().toISOString().split('T')[0];
+      for (var d = 1; d <= daysInMonth; d++) {
+        var mStr = String(month + 1).padStart(2, '0');
+        var dStr = String(d).padStart(2, '0');
+        var iso = year + '-' + mStr + '-' + dStr;
+
+        var cell = document.createElement('div');
+        cell.className = 'cal-day';
+        if (iso === todayIso) cell.classList.add('today');
+        if (iso === selectedCalIso) cell.classList.add('selected');
+
+        var hasEntry = journals.some(function(j) { return j.date === iso; });
+        var hasRem = reminders.some(function(r) { return r.date === iso && !r.isCompleted; });
+
+        var dotsHtml = '';
+        if (hasEntry || hasRem) {
+          dotsHtml = '<div class="cal-dots">';
+          if (hasEntry) dotsHtml += '<span class="cal-dot"></span>';
+          if (hasRem) dotsHtml += '<span class="cal-dot" style="background: #ef4444;"></span>';
+          dotsHtml += '</div>';
+        }
+
+        cell.innerHTML = '<span>' + d + '</span>' + dotsHtml;
+        (function(targetIso) {
+          cell.onclick = function() {
+            selectedCalIso = targetIso;
+            renderCalendarView();
+          };
+        })(iso);
+        matrix.appendChild(cell);
+      }
+
+      renderSelectedCalDay();
+    }
+
+    function renderSelectedCalDay() {
+      document.getElementById('cal-selected-date-text').textContent = 'Date: ' + selectedCalIso;
+      var list = document.getElementById('cal-selected-entries-list');
+      list.innerHTML = '';
+
+      var dayEntries = journals.filter(function(j) { return j.date === selectedCalIso; });
+      if (dayEntries.length === 0) {
+        list.innerHTML = '<div style="font-size: 0.8rem; color: var(--text-muted); padding: 8px 0;">No journal entries for this date.</div>';
+        return;
+      }
+
+      dayEntries.forEach(function(ent) {
+        var item = document.createElement('div');
+        item.style.padding = '8px 0';
+        item.style.borderBottom = '1px solid var(--border)';
+        item.innerHTML = [
+          '<div style="font-weight: 700; font-size: 0.9rem;">' + (ent.title || 'Untitled') + '</div>',
+          '<div style="font-size: 0.75rem; color: var(--text-muted);">' + (ent.mood || '') + ' · ' + (ent.time || '') + '</div>',
+          '<p class="entry-snippet" style="margin-top: 4px;">' + ent.content + '</p>'
+        ].join('');
+        item.onclick = function() { openReaderModal(ent.id); };
+        list.appendChild(item);
+      });
+    }
+
+    function calPrevMonth() { calDate.setMonth(calDate.getMonth() - 1); renderCalendarView(); }
+    function calNextMonth() { calDate.setMonth(calDate.getMonth() + 1); renderCalendarView(); }
+    function calJumpToday() { calDate = new Date(); selectedCalIso = new Date().toISOString().split('T')[0]; renderCalendarView(); }
+    function openEditorModalForDate() {
+      openEditorModal();
+      document.getElementById('ed-date').value = selectedCalIso;
+    }
+
+    // --- REMINDERS ---
+    function renderRemindersView() {
+      var feed = document.getElementById('reminders-feed');
+      feed.innerHTML = '';
+      if (reminders.length === 0) {
+        feed.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No reminders scheduled.</div>';
+        return;
+      }
+
+      reminders.forEach(function(r) {
+        var card = document.createElement('div');
+        card.className = 'card';
+        card.style.display = 'flex';
+        card.style.justifyContent = 'space-between';
+        card.style.alignItems = 'center';
+        card.innerHTML = [
+          '<div>',
+            '<div style="font-weight: 700; font-size: 0.95rem; text-decoration: ' + (r.isCompleted ? 'line-through' : 'none') + '; opacity: ' + (r.isCompleted ? 0.6 : 1) + '">',
+              r.title,
+            '</div>',
+            '<div class="meta-line" style="margin: 0; margin-top: 4px;">',
+              '<span>' + r.date + ' at ' + r.time + '</span>',
+              (r.repeat !== 'none' ? '<span class="meta-sep">·</span><span>Repeats ' + r.repeat + '</span>' : ''),
+            '</div>',
+          '</div>',
+          '<div style="display: flex; gap: 6px;">',
+            '<button class="btn btn-sm" onclick="toggleReminderDone(\'' + r.id + '\')">' + (r.isCompleted ? 'Undo' : 'Done') + '</button>',
+            '<button class="btn btn-sm btn-danger" onclick="deleteReminder(\'' + r.id + '\')">✕</button>',
+          '</div>'
+        ].join('');
+        feed.appendChild(card);
+      });
+    }
+
+    function openReminderModal() {
+      document.getElementById('rem-in-title').value = '';
+      document.getElementById('rem-in-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('modal-reminder').classList.add('open');
+    }
+    function closeReminderModal() {
+      document.getElementById('modal-reminder').classList.remove('open');
+    }
+    function saveReminderEntry() {
+      var title = document.getElementById('rem-in-title').value.trim();
+      var date = document.getElementById('rem-in-date').value;
+      var time = document.getElementById('rem-in-time').value;
+      var repeat = document.getElementById('rem-in-repeat').value;
+      if (!title) return;
+
+      reminders.push({ id: 'rem-' + Date.now(), title: title, date: date, time: time, repeat: repeat, isCompleted: false });
+      setStorage('reminders', reminders);
+      closeReminderModal();
+      showToast('Reminder added!');
+      renderRemindersView();
+    }
+    function toggleReminderDone(id) {
+      var r = reminders.find(function(x) { return x.id === id; });
+      if (r) {
+        r.isCompleted = !r.isCompleted;
+        setStorage('reminders', reminders);
+        renderRemindersView();
+        showToast(r.isCompleted ? 'Marked complete' : 'Reminder reopened');
+      }
+    }
+    function deleteReminder(id) {
+      reminders = reminders.filter(function(r) { return r.id !== id; });
+      setStorage('reminders', reminders);
+      renderRemindersView();
+    }
+    function saveDailyRitualTime() {
+      settings.dailyReminderTime = document.getElementById('daily-ritual-time').value;
+      setStorage('settings', settings);
+      showToast('Daily ritual time updated');
+    }
+
+    // --- SETTINGS ---
+    function renderSettingsView() {
+      document.getElementById('daily-ritual-time').value = settings.dailyReminderTime || '20:30';
+      if (settings.pinEnabled) {
+        document.getElementById('btn-lock-now').style.display = 'inline-flex';
+        document.getElementById('btn-remove-pin').style.display = 'inline-flex';
+      } else {
+        document.getElementById('btn-lock-now').style.display = 'none';
+        document.getElementById('btn-remove-pin').style.display = 'none';
+      }
+    }
+    function openSetPinModal() {
+      document.getElementById('pin-setup-input').value = '';
+      document.getElementById('pin-setup-confirm').value = '';
+      document.getElementById('pin-setup-answer').value = '';
+      document.getElementById('pin-setup-err').textContent = '';
+      document.getElementById('modal-set-pin').classList.add('open');
+    }
+    function closeSetPinModal() {
+      document.getElementById('modal-set-pin').classList.remove('open');
+    }
+    function submitPinSetup() {
+      var p1 = document.getElementById('pin-setup-input').value.trim();
+      var p2 = document.getElementById('pin-setup-confirm').value.trim();
+      var q = document.getElementById('pin-setup-question').value.trim();
+      var a = document.getElementById('pin-setup-answer').value.trim();
+
+      if (p1.length !== 4 || !/^\d{4}$/.test(p1)) {
+        document.getElementById('pin-setup-err').textContent = 'PIN must be exactly 4 digits.';
+        return;
+      }
+      if (p1 !== p2) {
+        document.getElementById('pin-setup-err').textContent = 'PINs do not match.';
+        return;
+      }
+      if (!a) {
+        document.getElementById('pin-setup-err').textContent = 'Please enter a recovery answer.';
+        return;
+      }
+
+      settings.pinEnabled = true;
+      settings.pinHash = p1;
+      settings.securityQuestion = q;
+      settings.securityAnswer = a;
+      setStorage('settings', settings);
+      closeSetPinModal();
+      showToast('PIN security configured!');
+      renderSettingsView();
+    }
+    function disablePin() {
+      if (!confirm('Disable PIN lock?')) return;
+      settings.pinEnabled = false;
+      settings.pinHash = '';
+      setStorage('settings', settings);
+      showToast('PIN disabled');
+      renderSettingsView();
+    }
+
+    // --- BACKUP & EXPORT ---
+    function exportDataJson() {
+      var backup = { journals: journals, notes: notes, reminders: reminders, settings: settings, exportedAt: new Date().toISOString() };
+      var blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'chronicle_diary_backup.json';
+      a.click();
+      showToast('Backup downloaded');
+    }
+    function importDataJson(e) {
+      var file = e.target.files && e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          var data = JSON.parse(evt.target.result);
+          if (Array.isArray(data.journals)) { journals = data.journals; setStorage('journals', journals); }
+          if (Array.isArray(data.notes)) { notes = data.notes; setStorage('notes', notes); }
+          if (Array.isArray(data.reminders)) { reminders = data.reminders; setStorage('reminders', reminders); }
+          if (data.settings) { settings = data.settings; setStorage('settings', settings); }
+          showToast('Data restored successfully!');
+          renderDashboard();
+        } catch (err) {
+          alert('Invalid backup JSON file.');
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    }
+    function clearAllData() {
+      if (!confirm('Delete all diary entries, notes, and settings? This cannot be undone.')) return;
+      localStorage.clear();
+      journals = [];
+      notes = [];
+      reminders = [];
+      settings = INITIAL_SETTINGS;
+      showToast('All local data cleared');
+      renderDashboard();
+    }
+
+    // --- DOWNLOAD THIS APP FILE DIRECTLY ---
+    function downloadThisAppFile() {
+      var html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'index.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('Downloaded index.html!');
+    }
+
+    function copyFullAppHtml() {
+      var html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      copyToClipboard(html, 'Full index.html code copied!');
+    }
+
+    // --- GLOBAL SEARCH ---
+    function openSearchModal() {
+      document.getElementById('search-modal-input').value = '';
+      document.getElementById('search-modal-results').innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">Type keywords above to search offline.</div>';
+      document.getElementById('modal-search').classList.add('open');
+      setTimeout(function() { document.getElementById('search-modal-input').focus(); }, 100);
+    }
+    function closeSearchModal() {
+      document.getElementById('modal-search').classList.remove('open');
+    }
+    function runGlobalSearch() {
+      var q = (document.getElementById('search-modal-input').value || '').toLowerCase().trim();
+      var resEl = document.getElementById('search-modal-results');
+      if (!q) {
+        resEl.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">Type keywords above to search offline.</div>';
+        return;
+      }
+
+      var matchJournals = journals.filter(function(j) { return (j.title||'').toLowerCase().includes(q) || (j.content||'').toLowerCase().includes(q); });
+      var matchNotes = notes.filter(function(n) { return (n.title||'').toLowerCase().includes(q) || (n.content||'').toLowerCase().includes(q); });
+
+      if (matchJournals.length === 0 && matchNotes.length === 0) {
+        resEl.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">No entries or notes found.</div>';
+        return;
+      }
+
+      var html = '';
+      if (matchJournals.length > 0) {
+        html += '<h4 style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">JOURNALS</h4>';
+        matchJournals.forEach(function(j) {
+          html += [
+            '<div class="card" style="cursor: pointer;" onclick="closeSearchModal(); openReaderModal(\'' + j.id + '\')">',
+              '<div style="font-weight: 700; font-size: 0.95rem;">' + (j.title || 'Untitled') + '</div>',
+              '<div class="meta-line"><span>' + j.date + '</span></div>',
+              '<p class="entry-snippet">' + j.content + '</p>',
+            '</div>'
+          ].join('');
+        });
+      }
+      if (matchNotes.length > 0) {
+        html += '<h4 style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin: 12px 0 8px 0;">NOTES</h4>';
+        matchNotes.forEach(function(n) {
+          html += [
+            '<div class="card">',
+              '<div style="font-weight: 700; font-size: 0.95rem;">' + (n.title || 'Note') + '</div>',
+              '<p style="font-size: 0.88rem; white-space: pre-wrap;">' + n.content + '</p>',
+            '</div>'
+          ].join('');
+        });
+      }
+      resEl.innerHTML = html;
+    }
+
+    // Auto-lock on blur if configured
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden && settings.pinEnabled && settings.autoLockTime === 'immediate') {
+        lockAppNow();
+      }
     });
-    getRedirectResult(auth).catch(e => message('Sign-in result: ' + safeError(e)));
-  } catch (e) {
-    state('Firebase error'); message('Firebase initialization failed: ' + safeError(e));
-  }
-}
 
-$('fbEmailLogin').onclick = async () => {
-  if (!auth) return message('Add the real Firebase API key first.');
-  try { const {email,password}=validateEmailPassword(); await signInWithEmailAndPassword(auth,email,password); }
-  catch(e) { message('Sign in failed: ' + safeError(e)); }
-};
-$('fbSignUp').onclick = async () => {
-  if (!auth) return message('Add the real Firebase API key first.');
-  try { const {email,password}=validateEmailPassword(); await createUserWithEmailAndPassword(auth,email,password); }
-  catch(e) { message('Account creation failed: ' + safeError(e)); }
-};
-$('fbGoogle').onclick = async () => {
-  if (!auth) return message('Add the real Firebase API key first.');
-  try { await signInWithPopup(auth,new GoogleAuthProvider()); }
-  catch(e) { message('Google sign-in failed: ' + safeError(e) + ' Ensure Google is enabled and this site is listed under Authorized domains.'); }
-};
-$('fbReset').onclick = async () => {
-  if (!auth) return message('Add the real Firebase API key first.');
-  try {
-    const email=$('fbEmail').value.trim();
-    if (!email) throw new Error('Enter your email address first.');
-    await sendPasswordResetEmail(auth,email);
-    message('Password reset email sent. Check your inbox and spam folder.');
-  } catch(e) { message('Password reset failed: ' + safeError(e)); }
-};
-$('fbSendOtp').onclick = async () => {
-  if (!auth) return message('Add the real Firebase API key first.');
-  try {
-    const phone=$('fbPhone').value.trim();
-    if (!phone) throw new Error('Enter your full phone number with country code, e.g. +91…');
-    if (recaptcha) { try { recaptcha.clear(); } catch {} recaptcha = null; }
-    $('fbRecaptcha').innerHTML = '';
-    recaptcha = new RecaptchaVerifier(auth,'fbRecaptcha',{size:'normal'});
-    await recaptcha.render();
-    phoneConfirmation = await signInWithPhoneNumber(auth,phone,recaptcha);
-    $('fbOtp').classList.remove('hidden');
-    $('fbVerifyOtp').classList.remove('hidden');
-    message('OTP sent by SMS. Enter the verification code.');
-  } catch(e) {
-    message('Could not send OTP: ' + safeError(e) + ' Check Phone provider, test numbers/SMS region policy, and authorized domain in Firebase.');
-    if (recaptcha) { try { recaptcha.clear(); } catch {} recaptcha=null; }
-  }
-};
-$('fbVerifyOtp').onclick = async () => {
-  try {
-    if (!phoneConfirmation) throw new Error('Send the OTP first.');
-    const code=$('fbOtp').value.trim();
-    if (!code) throw new Error('Enter the SMS verification code.');
-    await phoneConfirmation.confirm(code);
-    phoneConfirmation = null;
-    $('fbOtp').value = ''; $('fbOtp').classList.add('hidden'); $('fbVerifyOtp').classList.add('hidden');
-  } catch(e) { message('OTP verification failed: ' + safeError(e)); }
-};
-$('fbSignOut').onclick = async () => {
-  if (!auth) return;
-  try {
-    if (currentUser) saveAccountCache(currentUser.uid);
-    stopListeners(); cloudReady=false;
-    await signOut(auth);
-  } catch(e) { message('Sign out failed: ' + safeError(e)); }
-};
-$('fbSyncNow').onclick = async () => {
-  if (!currentUser) return message('Sign in first.');
-  if (!navigator.onLine) return message('You are offline. Your data stays on this device; reconnect and try again.');
-  if (!cloudReady) return message('Cloud is still connecting. Try again in a moment.');
-  const d=payloadLocal();
-  if (!confirm('Upload the current diary shown on this device to this signed-in account? This replaces the cloud document. Continue only if this is the correct account and data.')) return;
-  pendingLocal=true; setPending(currentUser.uid,true);
-  await writeCloud('manual');
-};
-window.addEventListener('diary-local-change',queueCloud);
-window.addEventListener('diary-alarm-change',queueCloud);
-window.addEventListener('online',()=>{if(currentUser && isPending(currentUser.uid)){state('Sync pending…');queueCloud();}});
-</script>
+    // Initialize application on load
+    if (settings.theme) setAppTheme(settings.theme);
+    if (settings.fontFamily) setAppFont(settings.fontFamily);
+    checkPinOnStartup();
+    renderDashboard();
+  </script>
 
-</body>
-</html>
+
+
+
+  <!-- EMAIL/PASSWORD AND PHONE OTP SIGN-IN -->
+  <div id="account-auth-panel" role="dialog" aria-modal="true" aria-labelledby="account-auth-title">
+    <div class="auth-card">
+      <h2 id="account-auth-title" style="margin:0 0 8px;">Account Login</h2>
+      <p style="font-size:13px;margin:0 0 14px;">लॉगिन और नया अकाउंट बनाने के लिए अलग विकल्प चुनें।</p>
+      <div class="auth-actions" style="margin-bottom:16px;">
+        <button class="auth-primary" type="button" id="auth-mode-login" aria-pressed="true">Login / लॉगिन</button>
+        <button class="auth-secondary" type="button" id="auth-mode-signup" aria-pressed="false">Sign Up / नया अकाउंट</button>
+      </div>
+      <label for="auth-email">ईमेल</label>
+      <input id="auth-email" name="diary-login-email" type="email" autocomplete="off" autocapitalize="none" placeholder="अपना ईमेल लिखें">
+      <label for="auth-password">पासवर्ड</label>
+      <input id="auth-password" name="diary-login-password" type="password" autocomplete="off" placeholder="पासवर्ड लिखें">
+      <div id="auth-confirm-group" style="display:none;">
+        <label for="auth-password-confirm">पासवर्ड दोबारा लिखें</label>
+        <input id="auth-password-confirm" type="password" autocomplete="new-password" placeholder="पासवर्ड की पुष्टि करें">
+      </div>
+      <div class="auth-actions" id="auth-login-actions">
+        <button class="auth-primary" type="button" id="auth-email-login">Email Login / लॉगिन करें</button>
+      </div>
+      <div class="auth-actions" id="auth-signup-actions" style="display:none;">
+        <button class="auth-primary" type="button" id="auth-email-create">Sign Up / नया अकाउंट बनाएँ</button>
+      </div>
+      <div id="auth-phone-section" style="display:block;">
+      <hr style="margin:18px 0;">
+      <h3 style="margin:0 0 10px;font-size:16px;font-weight:700;">Phone Login / फोन नंबर से लॉगिन</h3>
+      <label for="auth-phone">फोन नंबर (देश कोड सहित, जैसे +91XXXXXXXXXX)</label>
+      <input id="auth-phone" name="diary-phone-login" type="tel" autocomplete="tel" placeholder="+91XXXXXXXXXX">
+      <div id="recaptcha-container" style="margin:8px 0;"></div>
+      <div class="auth-actions">
+        <button class="auth-primary" type="button" id="auth-send-otp">फोन पर OTP भेजें</button>
+      </div>
+      <div id="auth-otp-area" style="display:none;">
+        <label for="auth-otp">SMS से आया OTP</label>
+        <input id="auth-otp" inputmode="numeric" autocomplete="one-time-code" placeholder="OTP दर्ज करें">
+        <div class="auth-actions"><button class="auth-primary" type="button" id="auth-verify-otp">OTP सत्यापित करें</button></div>
+      </div>
+      </div>
+      <div id="auth-message" role="status" aria-live="polite"></div>
+      <div class="auth-actions"><button class="auth-secondary" type="button" id="auth-close">बंद करें</button></div>
+    </div>
+  </div>
+
+  <!-- FIREBASE GOOGLE SIGN-IN + FIRESTORE CLOUD SYNC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+    import {
+      getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence,
+      createUserWithEmailAndPassword, signInWithEmailAndPassword, RecaptchaVerifier, signInWithPhoneNumber
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+    import {
+      getFirestore, doc, getDoc, setDoc, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCv9tWc183pssCDUinQWLwue02skrPB1CE",
+      authDomain: "digital-dairy-922a8.firebaseapp.com",
+      databaseURL: "https://digital-dairy-922a8-default-rtdb.firebaseio.com",
+      projectId: "digital-dairy-922a8",
+      storageBucket: "digital-dairy-922a8.firebasestorage.app",
+      messagingSenderId: "123517202916",
+      appId: "1:123517202916:web:697075fcfa02aeb9be97f1",
+      measurementId: "G-GHRLWCNVPG"
+    };
+
+    const firebaseApp = initializeApp(firebaseConfig);
+    const auth = getAuth(firebaseApp);
+    const db = getFirestore(firebaseApp);
+    // Keep the signed-in session on this browser/device.
+    const persistenceReady = setPersistence(auth, browserLocalPersistence);
+    const googleProvider = new GoogleAuthProvider();
+    googleProvider.setCustomParameters({ prompt: "select_account" });
+    const loginButton = document.getElementById("google-login-btn");
+    const userStatus = document.getElementById("google-user-status");
+    let activeUid = null;
+    let syncReady = false;
+    let syncQueue = Promise.resolve();
+
+    // One private document per Google account. PIN and recovery-answer data are never uploaded.
+    function userDataRef(uid) {
+      return doc(db, "users", uid, "entries", "appData");
+    }
+
+    function safeArray(value) {
+      return Array.isArray(value) ? value : [];
+    }
+
+    // Keep all cloud items, then let this device's copy win when the same ID exists.
+    function mergeById(cloudItems, localItems) {
+      const map = new Map();
+      safeArray(cloudItems).forEach(item => { if (item && item.id != null) map.set(String(item.id), item); });
+      safeArray(localItems).forEach(item => { if (item && item.id != null) map.set(String(item.id), item); });
+      return Array.from(map.values()).sort((a, b) => Number(b.timestamp || b.updatedAt || 0) - Number(a.timestamp || a.updatedAt || 0));
+    }
+
+    function localSnapshot() {
+      const settings = window.settings || {};
+      return {
+        journals: safeArray(window.journals),
+        notes: safeArray(window.notes),
+        reminders: safeArray(window.reminders),
+        // Sync preferences only; keep PIN, PIN hash, and recovery answer on this device.
+        preferences: {
+          theme: settings.theme || "light",
+          fontFamily: settings.fontFamily || "sans",
+          dailyReminderTime: settings.dailyReminderTime || "20:30"
+        }
+      };
+    }
+
+    async function writeSnapshot(uid) {
+      if (!uid || uid !== activeUid || !syncReady) return;
+      const snapshot = localSnapshot();
+      // Serialize writes so rapid edits do not finish out of order.
+      syncQueue = syncQueue.then(async () => {
+        if (uid !== activeUid || !syncReady) return;
+        await setDoc(userDataRef(uid), { ...snapshot, updatedAt: serverTimestamp() });
+        if (uid === activeUid && userStatus) userStatus.textContent = "Cloud synced";
+      });
+      try {
+        await syncQueue;
+      } catch (error) {
+        console.error("Firestore sync error:", error);
+        if (uid === activeUid && userStatus) userStatus.textContent = "Sync failed";
+        alert("Cloud Sync नहीं हो पाया: " + (error.message || "Firebase Rules और इंटरनेट जाँचें।"));
+      }
+    }
+
+    window.addEventListener("chronicle-local-data-changed", () => {
+      if (activeUid && syncReady) writeSnapshot(activeUid);
+    });
+
+    let loginRequestInProgress = false;
+    window.chronicleGoogleLogin = async function () {
+      // Prevent rapid/double taps from starting overlapping authentication requests.
+      if (loginRequestInProgress) return;
+      loginRequestInProgress = true;
+      if (loginButton) loginButton.disabled = true;
+      try {
+        await persistenceReady;
+        if (auth.currentUser) {
+          syncReady = false;
+          await signOut(auth);
+        } else {
+          // Popup sign-in avoids the redirect loop commonly seen on GitHub Pages
+          // when mobile browsers partition cross-site storage.
+          const credential = await signInWithPopup(auth, googleProvider);
+          if (userStatus && credential.user) {
+            userStatus.textContent = credential.user.email || "Logged in";
+            userStatus.title = credential.user.email || "";
+          }
+        }
+      } catch (error) {
+        console.error("Google sign-in error:", error);
+        let message = error && error.message ? error.message : "कृपया Firebase सेटिंग जाँचें।";
+        if (error && error.code === "auth/unauthorized-domain") {
+          message = "यह वेबसाइट Firebase में Authorized domains में जोड़ी नहीं गई है। Firebase Authentication → Settings → Authorized domains में aavakeel73-oss.github.io जोड़ें।";
+        } else if (error && error.code === "auth/popup-blocked") {
+          message = "ब्राउज़र ने Google Login popup रोक दिया। इस वेबसाइट के लिए popup अनुमति दें या Chrome में खोलें।";
+        } else if (error && error.code === "auth/popup-closed-by-user") {
+          message = "Google Login विंडो बंद हो गई। दोबारा कोशिश करें।";
+        }
+        alert("Google Login नहीं हो पाया: " + message);
+      } finally {
+        loginRequestInProgress = false;
+        if (loginButton) loginButton.disabled = false;
+      }
+    };
+
+
+    // Email/password and phone/SMS OTP use the same Firebase account and cloud-sync flow.
+    const authPanel = document.getElementById("account-auth-panel");
+    const authMessage = document.getElementById("auth-message");
+    let phoneConfirmation = null;
+    let recaptchaVerifier = null;
+    function setAuthMessage(message, isError = false) {
+      if (authMessage) {
+        authMessage.textContent = message;
+        authMessage.style.color = isError ? "#dc2626" : "#15803d";
+      }
+    }
+    window.chronicleOpenAuth = function () {
+      if (authPanel) authPanel.style.display = "flex";
+      setAuthMode("login");
+      document.getElementById("auth-email").value = "";
+      document.getElementById("auth-password").value = "";
+      document.getElementById("auth-password-confirm").value = "";
+      document.getElementById("auth-phone").value = "";
+      document.getElementById("auth-otp").value = "";
+      document.getElementById("auth-otp-area").style.display = "none";
+      document.getElementById("auth-phone-section").style.display = "block";
+      document.getElementById("auth-otp-area").style.display = "none";
+      setAuthMessage("");
+    };
+    function closeAuthPanel() {
+      if (authPanel) authPanel.style.display = "none";
+    }
+    document.getElementById("auth-close")?.addEventListener("click", closeAuthPanel);
+    function setAuthMode(mode) {
+      const signup = mode === "signup";
+      document.getElementById("account-auth-title").textContent = signup ? "Create Account / नया अकाउंट" : "Account Login / लॉगिन";
+      document.getElementById("auth-confirm-group").style.display = signup ? "block" : "none";
+      document.getElementById("auth-signup-actions").style.display = signup ? "flex" : "none";
+      document.getElementById("auth-login-actions").style.display = signup ? "none" : "flex";
+      document.getElementById("auth-phone-section").style.display = signup ? "none" : "block";
+      document.getElementById("auth-mode-login").className = signup ? "auth-secondary" : "auth-primary";
+      document.getElementById("auth-mode-signup").className = signup ? "auth-primary" : "auth-secondary";
+      document.getElementById("auth-mode-login").setAttribute("aria-pressed", String(!signup));
+      document.getElementById("auth-mode-signup").setAttribute("aria-pressed", String(signup));
+      document.getElementById("auth-password").setAttribute("autocomplete", signup ? "new-password" : "current-password");
+      document.getElementById("auth-password-confirm").value = "";
+      setAuthMessage("");
+    }
+    document.getElementById("auth-mode-login")?.addEventListener("click", () => {
+      setAuthMode("login");
+      document.getElementById("auth-phone-section").style.display = "block";
+      document.getElementById("auth-email").value = "";
+      document.getElementById("auth-password").value = "";
+    });
+    document.getElementById("auth-mode-signup")?.addEventListener("click", () => {
+      setAuthMode("signup");
+      document.getElementById("auth-email").value = "";
+      document.getElementById("auth-password").value = "";
+      document.getElementById("auth-password-confirm").value = "";
+    });
+    authPanel?.addEventListener("click", event => {
+      if (event.target === authPanel) closeAuthPanel();
+    });
+
+    document.getElementById("auth-email-login")?.addEventListener("click", async () => {
+      const email = document.getElementById("auth-email").value.trim();
+      const password = document.getElementById("auth-password").value;
+      if (!email || !password) return setAuthMessage("ईमेल और पासवर्ड भरें।", true);
+      try {
+        await persistenceReady;
+        await signInWithEmailAndPassword(auth, email, password);
+        setAuthMessage("लॉगिन सफल हुआ।");
+        closeAuthPanel();
+      } catch (error) {
+        console.error("Email login error:", error);
+        setAuthMessage(error.code === "auth/invalid-credential" || error.code === "auth/wrong-password"
+          ? "ईमेल या पासवर्ड गलत है।"
+          : error.code === "auth/operation-not-allowed"
+          ? "Firebase Console में Email/Password provider चालू करें।"
+          : (error.message || "ईमेल लॉगिन नहीं हुआ।"), true);
+      }
+    });
+
+    let emailCreateInProgress = false;
+    document.getElementById("auth-email-create")?.addEventListener("click", async () => {
+      const email = document.getElementById("auth-email").value.trim();
+      const password = document.getElementById("auth-password").value;
+      const confirmPassword = document.getElementById("auth-password-confirm").value;
+      const createButton = document.getElementById("auth-email-create");
+      if (emailCreateInProgress) return;
+      if (!email || !password || !confirmPassword) return setAuthMessage("ईमेल, पासवर्ड और पासवर्ड की पुष्टि भरें।", true);
+      if (password.length < 6) return setAuthMessage("पासवर्ड कम से कम 6 अक्षर का रखें।", true);
+      if (password !== confirmPassword) return setAuthMessage("दोनों पासवर्ड एक जैसे नहीं हैं।", true);
+      emailCreateInProgress = true;
+      if (createButton) { createButton.disabled = true; createButton.textContent = "अकाउंट बनाया जा रहा है…"; }
+      try {
+        await persistenceReady;
+        await createUserWithEmailAndPassword(auth, email, password);
+        // Keep Sign Up separate from Login: sign out after registration and ask user to log in manually.
+        await signOut(auth);
+        document.getElementById("auth-email").value = "";
+        document.getElementById("auth-password").value = "";
+        document.getElementById("auth-password-confirm").value = "";
+        setAuthMode("login");
+        setAuthMessage("अकाउंट बन गया है। अब Login में ईमेल और पासवर्ड भरकर लॉगिन करें।");
+      } catch (error) {
+        console.error("Email account creation error:", error);
+        setAuthMessage(error.code === "auth/email-already-in-use"
+          ? "यह ईमेल पहले से पंजीकृत है। नया अकाउंट बनाने के लिए दूसरी ईमेल दें या Email Login दबाएँ।"
+          : error.code === "auth/operation-not-allowed"
+          ? "Firebase Console में Email/Password provider चालू करें।"
+          : (error.message || "अकाउंट नहीं बना।"), true);
+      } finally {
+        emailCreateInProgress = false;
+        if (createButton) { createButton.disabled = false; createButton.textContent = "नया अकाउंट बनाएँ"; }
+      }
+    });
+
+    document.getElementById("auth-send-otp")?.addEventListener("click", async () => {
+      const phone = document.getElementById("auth-phone").value.trim();
+      if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
+        return setAuthMessage("फोन नंबर देश कोड सहित लिखें, जैसे +919876543210।", true);
+      }
+      try {
+        await persistenceReady;
+        const sendButton = document.getElementById("auth-send-otp");
+        sendButton.disabled = true;
+        if (recaptchaVerifier) {
+          try { await recaptchaVerifier.clear(); } catch (_) {}
+          recaptchaVerifier = null;
+        }
+        recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", { size: "normal" });
+        await recaptchaVerifier.render();
+        phoneConfirmation = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
+        document.getElementById("auth-otp-area").style.display = "block";
+        setAuthMessage("OTP भेज दिया गया है। SMS में आया कोड दर्ज करें।");
+      } catch (error) {
+        console.error("Phone OTP error:", error);
+        setAuthMessage(error.code === "auth/operation-not-allowed"
+          ? "Firebase Console में Phone provider चालू करें।"
+          : error.code === "auth/invalid-phone-number"
+          ? "फोन नंबर सही नहीं है। देश कोड सहित लिखें।"
+          : (error.message || "OTP नहीं भेजा गया। Firebase Phone सेटिंग जाँचें।"), true);
+      } finally {
+        document.getElementById("auth-send-otp").disabled = false;
+      }
+    });
+
+    document.getElementById("auth-verify-otp")?.addEventListener("click", async () => {
+      const code = document.getElementById("auth-otp").value.trim();
+      if (!phoneConfirmation) return setAuthMessage("पहले फोन पर OTP भेजें।", true);
+      if (!code) return setAuthMessage("SMS वाला OTP दर्ज करें।", true);
+      try {
+        await phoneConfirmation.confirm(code);
+        setAuthMessage("फोन लॉगिन सफल हुआ।");
+        closeAuthPanel();
+      } catch (error) {
+        console.error("OTP verification error:", error);
+        setAuthMessage(error.code === "auth/invalid-verification-code"
+          ? "OTP गलत है। दोबारा जाँचें।"
+          : (error.message || "OTP सत्यापित नहीं हुआ।"), true);
+      }
+    });
+
+    onAuthStateChanged(auth, async function (user) {
+      syncReady = false;
+      activeUid = user ? user.uid : null;
+      if (loginButton) loginButton.textContent = user ? "🚪 Logout" : "🔐 Google Login";
+      if (userStatus) {
+        userStatus.textContent = user ? "Loading cloud…" : "";
+        userStatus.title = user ? (user.email || "") : "";
+      }
+      if (!user) return;
+
+      try {
+        const snap = await getDoc(userDataRef(user.uid));
+        // Ignore a late response if the account changed while the request was running.
+        if (activeUid !== user.uid) return;
+        const cloud = snap.exists() ? snap.data() : {};
+        // STRICT ACCOUNT ISOLATION:
+        // Never import shared browser localStorage into a Google account. The same
+        // browser storage is visible after switching accounts, so importing it can
+        // copy Account A's private entries into Account B's cloud document.
+        // Each account starts from its own Firestore document; if none exists, start empty.
+        window.journals = safeArray(cloud.journals);
+        window.notes = safeArray(cloud.notes);
+        window.reminders = safeArray(cloud.reminders);
+        window.settings = Object.assign({}, window.settings || {}, cloud.preferences || {});
+
+        localStorage.setItem("chr_journals", JSON.stringify(window.journals));
+        localStorage.setItem("chr_notes", JSON.stringify(window.notes));
+        localStorage.setItem("chr_reminders", JSON.stringify(window.reminders));
+        localStorage.setItem("chr_settings", JSON.stringify(window.settings));
+
+        if (typeof window.renderDashboard === "function") window.renderDashboard();
+        if (typeof window.renderJournalView === "function") window.renderJournalView();
+        if (typeof window.renderNotesView === "function") window.renderNotesView();
+        if (typeof window.renderRemindersView === "function") window.renderRemindersView();
+        if (typeof window.renderSettingsView === "function") window.renderSettingsView();
+
+        syncReady = true;
+        await writeSnapshot(user.uid); // save only this account's loaded cloud data
+      } catch (error) {
+        console.error("Cloud load error:", error);
+        if (userStatus) userStatus.textContent = "Sync failed";
+        alert("Cloud data लोड नहीं हुआ: " + (error.message || "इंटरनेट और Firestore Rules जाँचें।"));
+      }
+    });
+  </script>
+
+</body></html>
