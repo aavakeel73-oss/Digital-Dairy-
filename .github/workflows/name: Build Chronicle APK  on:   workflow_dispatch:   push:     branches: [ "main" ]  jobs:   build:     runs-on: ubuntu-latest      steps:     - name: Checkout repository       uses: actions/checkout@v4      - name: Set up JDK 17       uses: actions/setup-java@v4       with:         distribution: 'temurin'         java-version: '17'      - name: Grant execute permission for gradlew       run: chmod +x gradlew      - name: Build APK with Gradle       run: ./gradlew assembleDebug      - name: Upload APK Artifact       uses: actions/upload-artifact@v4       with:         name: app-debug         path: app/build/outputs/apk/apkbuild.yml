@@ -23,7 +23,10 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Build APK with Gradle
+    - name:     - name: Build APK with Gradle
+      working-directory: ./subfolder-name   # यहाँ अपने एंड्रॉइड फोल्डर का सही नाम लिखें (जैसे यदि फोल्डर का नाम android या app है)
+      run: ./gradlew assembleDebug
+      
       run: ./gradlew assembleDebug
 
     - name: Upload APK Artifact
